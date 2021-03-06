@@ -2,14 +2,10 @@
   "name": "darichey.com",
   "version": "1.0.0",
   "scripts": {
-    "css-build": "node-sass --omit-source-map-url sass/style.sass css/style.css",
-    "css-watch": "npm run css-build -- --watch",
-    "serve": "npx serve",
-    "start": "npm run css-watch & npm run serve"
+    "dev": "parcel index.html",
+    "build": "parcel build index.html"
   },
   "devDependencies": {
-    "node-sass": "^4.13.1",
-    "normalize.css": "^8.0.1",
-    "serve": "^11.3.0"
+    "parcel": "next"
   }
 }
