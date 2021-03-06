@@ -6,6 +6,7 @@
     "build": "parcel build index.html"
   },
   "devDependencies": {
-    "parcel": "next"
+    "parcel": "next",
+    "parcel-reporter-static-files-copy": "^1.2.1"
   }
 }
