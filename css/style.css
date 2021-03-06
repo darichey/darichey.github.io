@@ -52,12 +52,11 @@ body {
   font-weight: bold;
 }
 
-.sep {
-  font-size: 2.2em;
-}
-
-section:not(:first-child) {
-  margin-top: 3vh;
+.links {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 25%;
 }
 
 @media (min-width: 1200px) {
@@ -87,10 +86,6 @@ section:not(:first-child) {
   }
 
   .nav > a {
-    font-size: 1.4em;
-  }
-
-  .sep {
     font-size: 1.4em;
   }
 }
