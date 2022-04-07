@@ -1,4 +1,6 @@
 import "../styles/style.css";
+import "highlight.js/styles/vs2015.css";
+import "katex/dist/katex.min.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Nav from "../components/Nav";
