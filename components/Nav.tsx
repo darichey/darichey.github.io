@@ -1,8 +1,29 @@
 import Link from "next/link";
+import styled from "styled-components";
+
+const Section = styled.section`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 1vh 1vw 1vh 1vw;
+
+  a {
+    color: #444;
+    text-decoration: none;
+    font-size: 2.2em;
+    font-weight: bold;
+  }
+
+  @media (min-width: 1200px) {
+    a {
+      font-size: 1.4em;
+    }
+  }
+`;
 
 const Nav = () => {
   return (
-    <section className="nav">
+    <Section>
       <Link href="/">
         <a>Home</a>
       </Link>
@@ -12,7 +33,7 @@ const Nav = () => {
       <Link href="https://github.com/darichey">
         <a>GitHub</a>
       </Link>
-    </section>
+    </Section>
   );
 };
 

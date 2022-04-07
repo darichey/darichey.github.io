@@ -1,16 +1,14 @@
 import type { NextPage } from "next";
+import Content from "../components/Content";
 import Header from "../components/Header";
 import Links from "../components/Links";
-import Nav from "../components/Nav";
 
 const Home: NextPage = () => {
   return (
-    <div className="main">
-      <Nav />
-
+    <div>
       <Header title="Hey, I'm David." subtitle="Sometimes I code stuff." />
 
-      <section className="content">
+      <Content>
         <p>
           I&apos;m a senior at UT Dallas pursuing a degree in Computer Science
           and minoring in Mathematics.
@@ -29,7 +27,7 @@ const Home: NextPage = () => {
         </p>
 
         <p>Online, I often go by Panda.</p>
-      </section>
+      </Content>
 
       <Links />
     </div>

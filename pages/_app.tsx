@@ -1,6 +1,16 @@
-import '../styles/style.css'
-import type { AppProps } from 'next/app'
-import Head from 'next/head'
+import "../styles/style.css";
+import type { AppProps } from "next/app";
+import Head from "next/head";
+import Nav from "../components/Nav";
+import styled from "styled-components";
+
+const Main = styled.div`
+  margin: 5vh 15vw 5vh 15vw;
+
+  @media (min-width: 1200px) {
+    margin: 3vh 30vw 5vh 30vw;
+  }
+`;
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -8,9 +18,12 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>David Richey</title>
       </Head>
-      <Component {...pageProps} />
+      <Main>
+        <Nav />
+        <Component {...pageProps} />
+      </Main>
     </div>
-  )
+  );
 }
 
-export default MyApp
+export default MyApp;

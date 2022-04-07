@@ -1,15 +1,13 @@
 import type { NextPage } from "next";
-import Nav from "../components/Nav";
 import Header from "../components/Header";
+import Content from "../components/Content";
 
 const Blog: NextPage = () => {
   return (
-    <div className="main">
-      <Nav />
-
+    <div>
       <Header title="David's Blog" subtitle="Sometimes I write stuff." />
 
-      <section className="content">
+      <Content>
         <p>
           From time to time, like to write about things that I&apos;m learning -
           or worse, my <i>opinions</i>.
@@ -31,7 +29,7 @@ const Blog: NextPage = () => {
           <li>String Concatenation in Java</li>
           <li>Subtyping Variance</li>
         </ul>
-      </section>
+      </Content>
     </div>
   );
 };
