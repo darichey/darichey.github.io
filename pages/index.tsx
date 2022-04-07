@@ -1,38 +1,14 @@
 import type { NextPage } from "next";
-import Image from "next/image";
-import Link from "next/link";
+import Header from "../components/Header";
+import Links from "../components/Links";
+import Nav from "../components/Nav";
 
 const Home: NextPage = () => {
   return (
     <div className="main">
-      <section className="nav">
-        <Link href="/">
-          <a>Home</a>
-        </Link>
-        <Link href="/blog">
-          <a>Blog</a>
-        </Link>
-        <Link href="https://github.com/darichey">
-          <a>GitHub</a>
-        </Link>
-      </section>
+      <Nav />
 
-      <section className="header">
-        <div className="pic">
-          <Image
-            src="/img/david.png"
-            alt="Picture of me"
-            layout="responsive"
-            width={1}
-            height={1}
-          />
-        </div>
-
-        <div className="titles">
-          <h1 className="title">Hey, I&apos;m David.</h1>
-          <h3 className="subtitle">Sometimes I code stuff.</h3>
-        </div>
-      </section>
+      <Header title="Hey, I'm David." subtitle="Sometimes I code stuff." />
 
       <section className="content">
         <p>
@@ -55,38 +31,7 @@ const Home: NextPage = () => {
         <p>Online, I often go by Panda.</p>
       </section>
 
-      <section className="links">
-        <Link href="https://github.com/darichey">
-          <a>
-            <Image
-              src="/img/github_mark.svg"
-              alt="Github Icon"
-              height={32}
-              width={32}
-            />
-          </a>
-        </Link>
-        <Link href="https://www.linkedin.com/in/darichey/">
-          <a>
-            <Image
-              src="/img/linkedin_mark.svg"
-              alt="LinkedIn Icon"
-              height={32}
-              width={32}
-            />
-          </a>
-        </Link>
-        <Link href="mailto:darichey1@gmail.com">
-          <a>
-            <Image
-              src="/img/mail.svg"
-              alt="Mail Icon"
-              height={32}
-              width={32}
-            />
-          </a>
-        </Link>
-      </section>
+      <Links />
     </div>
   );
 };

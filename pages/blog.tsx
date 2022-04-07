@@ -1,37 +1,13 @@
 import type { NextPage } from "next";
-import Link from "next/link";
-import Image from "next/image";
+import Nav from "../components/Nav";
+import Header from "../components/Header";
 
 const Blog: NextPage = () => {
   return (
     <div className="main">
-      <section className="nav">
-        <Link href="/">
-          <a>Home</a>
-        </Link>
-        <Link href="/blog">
-          <a>Blog</a>
-        </Link>
-        <Link href="https://github.com/darichey">
-          <a>GitHub</a>
-        </Link>
-      </section>
+      <Nav />
 
-      <section className="header">
-        <div className="pic">
-          <Image
-            src="/img/david.png"
-            alt="Picture of me"
-            layout="responsive"
-            width={1}
-            height={1}
-          />
-        </div>
-        <div className="titles">
-          <h1 className="title">David&apos;s Blog</h1>
-          <h3 className="subtitle">Sometimes I write stuff.</h3>
-        </div>
-      </section>
+      <Header title="David's Blog" subtitle="Sometimes I write stuff." />
 
       <section className="content">
         <p>
