@@ -6,4 +6,7 @@ module.exports = withContentlayer({
   compiler: {
     styledComponents: true,
   },
+  images: {
+    loader: "custom",
+  },
 });

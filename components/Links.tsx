@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import Image from "./Image";
 import styled from "styled-components";
 
 const Section = styled.section`
