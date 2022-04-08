@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import Header from "../../components/Header";
-import Content from "../../components/Content";
 import { allPosts } from "contentlayer/generated";
 import Link from "next/link";
 
@@ -10,10 +9,8 @@ const Blog: NextPage = () => {
   );
 
   return (
-    <div>
-      <Header title="David's Blog" subtitle="Sometimes I write stuff." />
-
-      <Content>
+    <>
+      <div className="flex flex-col gap-y-4 text-xl leading-relaxed content">
         <p>
           From time to time, like to write about things that I&apos;m learning -
           or worse, my <i>opinions</i>.
@@ -24,18 +21,18 @@ const Blog: NextPage = () => {
           in the hope that others can learn from them.
         </p>
 
-        <ul>
+        <ul className="list-disc list-inside">
           {posts.map((post) => (
             <li key={post.slug}>
               <Link href={`/blog/${post.slug}`}>
                 <a>{post.title}</a>
               </Link>{" "}
-              ({post.date})
+              <span className="font-thin text-slate-400 text-sm">({post.date})</span>
             </li>
           ))}
         </ul>
-      </Content>
-    </div>
+      </div>
+    </>
   );
 };
 

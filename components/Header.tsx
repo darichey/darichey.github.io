@@ -1,58 +1,14 @@
 import Image from "./Image";
-import styled from "styled-components";
 
 interface Props {
   title: string;
   subtitle: string;
 }
 
-const Section = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  @media (min-width: 1200px) {
-    flex-direction: row-reverse;
-    justify-content: space-between;
-  }
-`;
-
-const Pic = styled.div`
-  width: 40vw;
-  height: auto;
-
-  @media (min-width: 1200px) {
-    width: 15vw;
-  }
-`;
-
-const Title = styled.h1`
-  font-size: 5em;
-  font-weight: bold;
-  color: #1190d4;
-  text-align: center;
-  margin: 0 0 0 0;
-
-  @media (min-width: 1200px) {
-    font-size: 3em;
-  }
-`;
-
-const Subtitle = styled.h3`
-  font-size: 2.7em;
-  font-weight: bold;
-  text-align: center;
-  margin: 0 0 0 0;
-
-  @media (min-width: 1200px) {
-    font-size: 1.75em;
-  }
-`;
-
 const Header = ({ title, subtitle }: Props) => {
   return (
-    <Section>
-      <Pic>
+    <section className="flex flex-col md:flex-row-reverse justify-around items-center">
+      <div className="w-52">
         <Image
           src="/img/david.png"
           alt="Picture of me"
@@ -60,13 +16,13 @@ const Header = ({ title, subtitle }: Props) => {
           width={1}
           height={1}
         />
-      </Pic>
+      </div>
 
       <div>
-        <Title>{title}</Title>
-        <Subtitle>{subtitle}</Subtitle>
+        <h1 className="text-5xl font-bold text-sky-600 mb-4">{title}</h1>
+        <h2 className="text-3xl font-bold">{subtitle}</h2>
       </div>
-    </Section>
+    </section>
   );
 };
 

@@ -1,39 +1,20 @@
-import Link from "next/link";
-import styled from "styled-components";
+import NextLink from "next/link";
 
-const Section = styled.section`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 1vh 1vw 1vh 1vw;
-
-  a {
-    color: #444;
-    text-decoration: none;
-    font-size: 2.2em;
-    font-weight: bold;
-  }
-
-  @media (min-width: 1200px) {
-    a {
-      font-size: 1.4em;
-    }
-  }
-`;
+const Link = ({ href, text }: { href: string; text: string }) => {
+  return (
+    <NextLink href={href}>
+      <a className="font-semibold text-2xl">{text}</a>
+    </NextLink>
+  );
+};
 
 const Nav = () => {
   return (
-    <Section>
-      <Link href="/">
-        <a>Home</a>
-      </Link>
-      <Link href="/blog">
-        <a>Blog</a>
-      </Link>
-      <Link href="https://github.com/darichey">
-        <a>GitHub</a>
-      </Link>
-    </Section>
+    <section className="flex flex-row justify-around">
+      <Link href="/" text="Home" />
+      <Link href="/blog" text="Blog" />
+      <Link href="https://github.com/darichey" text="GitHub" />
+    </section>
   );
 };
 

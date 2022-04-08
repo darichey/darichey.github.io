@@ -1,17 +1,9 @@
 import Link from "next/link";
 import Image from "./Image";
-import styled from "styled-components";
-
-const Section = styled.section`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 25%;
-`;
 
 const Links = () => {
   return (
-    <Section>
+    <section className="flex gap-x-5">
       <Link href="https://github.com/darichey">
         <a>
           <Image
@@ -37,7 +29,7 @@ const Links = () => {
           <Image src="/img/mail.svg" alt="Mail Icon" height={32} width={32} />
         </a>
       </Link>
-    </Section>
+    </section>
   );
 };
 

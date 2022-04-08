@@ -2,28 +2,6 @@ import { useMDXComponent } from "next-contentlayer/hooks";
 import { allPosts, type Post } from ".contentlayer/generated";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
-import styled from "styled-components";
-
-const Title = styled.h1`
-  margin-bottom: 0;
-`;
-
-const Subtitle = styled.h2`
-  margin-top: 0;
-  margin-bottom: 0;
-  font-weight: lighter;
-  font-size: 1.2em;
-`;
-
-const Date = styled.h2`
-  margin-top: 0;
-  font-weight: lighter;
-  font-size: 1em;
-`;
-
-const Top = styled.div`
-  border-bottom: 1px solid black;
-`;
 
 type Props = {
   post: Post;
@@ -37,12 +15,14 @@ const BlogPage: NextPage<Props> = ({ post }) => {
       <Head>
         <title>{post.title}</title>
       </Head>
-      <div>
-        <Top>
-          <Title>{post.title}</Title>
-          <Subtitle>{post.subtitle}</Subtitle>
-          <Date>{post.date}</Date>
-        </Top>
+
+      <div className="text-center border-y-2 py-5">
+          <h1 className="text-4xl font-bold text-sky-600">{post.title}</h1>
+          <h2>{post.subtitle}</h2>
+          <h3>{post.date}</h3>
+        </div>
+
+      <div className="post flex flex-col gap-4 text-xl leading-relaxed content">
         <Component />
       </div>
     </>

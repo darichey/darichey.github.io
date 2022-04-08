@@ -1,14 +1,13 @@
 import type { NextPage } from "next";
-import Content from "../components/Content";
 import Header from "../components/Header";
 import Links from "../components/Links";
 
 const Home: NextPage = () => {
   return (
-    <div>
+    <>
       <Header title="Hey, I'm David." subtitle="Sometimes I code stuff." />
 
-      <Content>
+      <div className="flex flex-col gap-y-4 text-xl leading-relaxed content">
         <p>
           I&apos;m a senior at UT Dallas pursuing a degree in Computer Science
           and minoring in Mathematics.
@@ -27,10 +26,10 @@ const Home: NextPage = () => {
         </p>
 
         <p>Online, I often go by Panda.</p>
-      </Content>
+      </div>
 
       <Links />
-    </div>
+    </>
   );
 };
 
