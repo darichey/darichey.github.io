@@ -19,7 +19,7 @@ export const Post = defineDocumentType(() => ({
     slug: {
       type: "string",
       resolve: (doc) => doc._raw.sourceFileName.replace(".mdx", ""),
-    },
+    }
   },
 }));
 

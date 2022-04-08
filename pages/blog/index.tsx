@@ -1,8 +1,14 @@
 import type { NextPage } from "next";
 import Header from "../../components/Header";
 import Content from "../../components/Content";
+import { allPosts } from "contentlayer/generated";
+import Link from "next/link";
 
 const Blog: NextPage = () => {
+  const posts = allPosts.sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+
   return (
     <div>
       <Header title="David's Blog" subtitle="Sometimes I write stuff." />
@@ -18,16 +24,15 @@ const Blog: NextPage = () => {
           in the hope that others can learn from them.
         </p>
 
-        <p>
-          I&apos;m currently working on getting asciidoctor working so these
-          posts can look nice. Here&apos;s a preview of what I plan on posting
-          first &#128522;
-        </p>
         <ul>
-          <li>Arity of Types</li>
-          <li>Trampolines in Java</li>
-          <li>String Concatenation in Java</li>
-          <li>Subtyping Variance</li>
+          {posts.map((post) => (
+            <li key={post.slug}>
+              <Link href={`/blog/${post.slug}`}>
+                <a>{post.title}</a>
+              </Link>{" "}
+              ({post.date})
+            </li>
+          ))}
         </ul>
       </Content>
     </div>
