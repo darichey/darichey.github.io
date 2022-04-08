@@ -10,8 +10,19 @@ const Title = styled.h1`
 
 const Subtitle = styled.h2`
   margin-top: 0;
+  margin-bottom: 0;
   font-weight: lighter;
-  font-size: 1.3em;
+  font-size: 1.2em;
+`;
+
+const Date = styled.h2`
+  margin-top: 0;
+  font-weight: lighter;
+  font-size: 1em;
+`;
+
+const Top = styled.div`
+  border-bottom: 1px solid black;
 `;
 
 type Props = {
@@ -27,8 +38,11 @@ const BlogPage: NextPage<Props> = ({ post }) => {
         <title>{post.title}</title>
       </Head>
       <div>
-        <Title>{post.title}</Title>
-        <Subtitle>{post.subtitle}</Subtitle>
+        <Top>
+          <Title>{post.title}</Title>
+          <Subtitle>{post.subtitle}</Subtitle>
+          <Date>{post.date}</Date>
+        </Top>
         <Component />
       </div>
     </>

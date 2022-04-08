@@ -4,6 +4,7 @@ import rehypeKatex from "rehype-katex";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import haskell from "highlight.js/lib/languages/haskell";
+import ocaml from "highlight.js/lib/languages/ocaml";
 
 export const Post = defineDocumentType(() => ({
   name: "Post",
@@ -27,6 +28,6 @@ export default makeSource({
   documentTypes: [Post],
   mdx: {
     remarkPlugins: [remarkGfm, remarkMath],
-    rehypePlugins: [[rehypeHighlight, { languages: { haskell } }], rehypeKatex],
+    rehypePlugins: [[rehypeHighlight, { languages: { haskell, ocaml } }], rehypeKatex],
   },
 });

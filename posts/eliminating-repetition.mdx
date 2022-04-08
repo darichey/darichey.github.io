@@ -1,0 +1,222 @@
+---
+title: "Eliminating repetition"
+subtitle: "over-engineering a homework assignment for fun"
+date: "01-28-22"
+---
+
+For a class assignment, I had to write a tiny interpreter for a toy language whose specification was given to us. This
+post explores the process of recognizing and eliminating some repetition in the interpreter.
+
+## Basic factoring
+
+The language has basic arithmetic operations like plus, minus, and times which are modeled in the obvious way. An
+initial attempt at the function for evaluating arithmetic expressions might look something like the
+following.
+
+```ocaml
+let rec eval_arith (s : store) (a: iarith) -> int =
+  match a with
+  ...
+  | Plus (x, y) -> eval_arith s x + eval_arith s y
+  | Minus (x, y) -> eval_arith s x - eval_arith s y
+  | Times (x, y) -> eval_arith s x * eval_arith s y
+```
+
+Note that the `store` argument maps variable names to integer values. This is the "environment" that evaluation takes place in. Evaluation of plus, minus, and times expressions doesn't immediately need access to variable bindings, so the environment is simply passed through to the evaluations of each sub-expression.
+
+Honestly, this code is perfectly fine as-is, but I just can't help myself when I see a pattern like that... We can
+factor out the repetition by writing something like:
+
+```ocaml
+let foo f g a b = f (g a) (g b)
+
+let rec eval_arith (s : store) (a: iarith) -> int =
+  match a with
+  ...
+  | Plus (x, y) -> foo ( + ) (eval_arith s) x y
+  | Minus (x, y) -> foo ( - ) (eval_arith s) x y
+  | Times (x, y) -> foo ( * ) (eval_arith s) x y
+```
+
+`foo` is a function that applies a function to `a` and `b` and then combines the results of those functions using a
+given binary operator. It has the type `('a -> 'a -> 'b) -> ('c -> 'a) -> 'c -> 'c -> 'b`. A quick
+[hoogle search](https://hoogle.haskell.org/?hoogle=(a%20-%3E%20a%20-%3E%20b)%20-%3E%20(c%20-%3E%20a)%20-%3E%20c%20-%3E%20c%20-%3E%20b)
+shows that Haskell has such a function called `on` in `base`, so let's call it that.
+
+```ocaml
+let on f g a b = f (g a) (g b)
+
+let rec eval_arith (s : store) (a: iarith) -> int =
+  match a with
+  ...
+  | Plus (x, y) -> on ( + ) (eval_arith s) x y
+  | Minus (x, y) -> on ( - ) (eval_arith s) x y
+  | Times (x, y) -> on ( * ) (eval_arith s) x y
+```
+
+## The Reader Monad
+
+At this point, I'm fairly satisfied with this aspect of the implementation, but I want to revisit another aspect that I
+mentioned earlier:
+
+> Note that the `store` argument maps variable names to integer values. This is the "environment" that evaluation takes place in. Evaluation of plus, minus, and times expressions doesn't immediately need access to variable bindings, so the environment is simply passed through to the evaluations of each sub-expression.
+
+Classically, we use the `Reader` monad to do this environment passing implicitly. I've only been playing with OCaml
+for a week or so, but my understanding is that this kind of functional programming is not quite so popular in OCaml (the standard library does not have `Reader` and I couldn't find a de facto standard implementation like in Haskell's `mtl`).
+Given that, I decided to quickly re-implement the language in Haskell where I can make use of `mtl`, `do` notation,
+etc..
+
+Using `Reader` to pass around the environment, we can write `evalArith` as follows:
+
+```haskell
+evalArith :: IArith -> Reader Store Int
+...
+evalArith (Plus x y) = do
+  xn <- evalArith x
+  yn <- evalArith y
+  return $ xn + yn
+evalArith (Minus x y) = do
+  xn <- evalArith x
+  yn <- evalArith y
+  return $ xn - yn
+evalArith (Times x y) = do
+  xn <- evalArith x
+  yn <- evalArith y
+  return $ xn * yn
+```
+
+Success! The environment no longer needs to be explicitly passed down to the sub-computations. Again, there's a
+not-insignificant amount of repetition here. Let's factor it out:
+
+```haskell
+foo :: (Int -> Int -> Int) -> (IArith -> Reader Store Int) -> IArith -> IArith -> Reader Store Int
+foo' f g x y = do
+  xn <- g x
+  yn <- g y
+  return $ f xn yn
+
+evalArith :: IArith -> Reader Store Int
+...
+evalArith (Plus x y) = foo (+) evalArith x y
+evalArith (Minus x y) = foo (-) evalArith x y
+evalArith (Times x y) = foo (*) evalArith x y
+```
+
+I'm not exactly sure what to call this function yet, but let's move on for now.
+
+## Combining them
+
+I'm still not quite satisfied with this implementation. In the first section, we discovered a function, `on`, that
+encapsulates the idea of combining the results of applying a function to two different arguments. Now, we're still doing
+that, but we're not using `on`! Let's see how we can define `foo` in terms of `on` to get the best of both worlds.
+
+To start, let's lay out the types of each function and try to solve the type puzzle (we'll need to figure out how to
+fit together the "pieces").
+
+```haskell
+foo :: (Int -> Int -> Int) -> (IArith -> Reader Store Int) -> IArith -> IArith -> Reader Store Int
+on  :: (b   -> b   -> c  ) -> (a      -> b               ) -> a      -> a      -> c
+```
+
+Lining up the types like this shows how these have very similar shapes! However, we quickly realize that there's no
+consistent instantiation of the type variables. We have `a ~ IArith`, but `b` needs to be both `Int` and
+`Reader Store Int` (and similarly for `c`). This tells us that `foo` and `on` aren't the same, so we need _something_ to
+transform one to the other. To determine what that "something" is, let's consider what we have and what we need. We'll
+use typed holes to guide the process.
+
+```haskell
+foo :: (Int -> Int -> Int) -> (IArith -> Reader Store Int) -> IArith -> IArith -> Reader Store Int
+foo f g x y = on _ _ _ _
+```
+
+We already know that `a ~ IArith` is valid, and we have two arguments of that type, `x` and `y`, so let's plug those in.
+
+```haskell
+foo :: (Int -> Int -> Int) -> (IArith -> Reader Store Int) -> IArith -> IArith -> Reader Store Int
+foo f g x y = on _ _ x y
+```
+
+Let's take a look at what the compiler has to say about the remaining holes.
+
+```
+app/Main.hs:43:18: error:
+    • Found hole: _ :: b0 -> b0 -> Reader Store Int
+      Where: ‘b0’ is an ambiguous type variable
+    ...
+   |
+43 | foo f g x y = on _ _ x y
+   |                  ^
+
+app/Main.hs:43:20: error:
+    • Found hole: _ :: IArith -> b0
+      Where: ‘b0’ is an ambiguous type variable
+    ...
+   |
+43 | foo f g x y = on _ _ x y
+   |                    ^
+```
+
+We can see that we have a free type variable, `b0`. We can also see that the second hole has a shape similar to
+something we have: `g :: IArith -> Reader Store Int`. Let's plug in `g` for the second hole (therefore setting
+`b0 ~ Reader Store Int`) and see what that does for us.
+
+```haskell
+foo :: (Int -> Int -> Int) -> (IArith -> Reader Store Int) -> IArith -> IArith -> Reader Store Int
+foo f g x y = on _ g x y
+```
+
+```
+app/Main.hs:43:18: error:
+    • Found hole:
+        _ :: Reader Store Int -> Reader Store Int -> Reader Store Int
+    ...
+   |
+43 | foo f g x y = on _ g x y
+   |                  ^
+```
+
+If you squint, the type of `f` and the type of the hole look kind of similar...
+
+```haskell
+_ :: Reader Store Int -> Reader Store Int -> Reader Store Int
+f ::              Int ->              Int ->              Int
+```
+
+We have a pure function on `Int`s and we want a similar function on `Ints` where each argument and the result _also_
+have an associated environment. In Haskell terms, we want to "lift" the function we have into the Reader monad. This situation turns out to be incredibly common when dealing with monads. For functions of two arguments, Haskell has a function, `liftM2`, that will do precisely what we want.
+
+```haskell
+liftM2 :: Monad m => (a1 -> a2 -> r) -> m a1 -> m a2 -> m r
+```
+
+Therefore, we can write `foo` as follows:
+
+```haskell
+foo :: (Int -> Int -> Int) -> (IArith -> Reader Store Int) -> IArith -> IArith -> Reader Store Int
+foo f g x y = on (liftM2 f) g x y
+```
+
+I'm not sure if there's some kind of naming convention for functions like these, but I went with `onLiftM2` because...
+it's `on`... after `liftM2`. Eta-reducing and generalizing the type signature (which will allow the same function to be used for boolean evaluation!), we arrive at the final definition of both `onLiftM2` and `evalArith`.
+
+```haskell
+onLiftM2 :: Monad m => (a -> a -> c) -> (b -> m a) -> b -> b -> m c
+onLiftM2 = on . liftM2
+
+evalArith :: IArith -> Reader Store Int
+...
+evalArith (Plus x y)  = onLiftM2 (+) evalArith x y
+evalArith (Minus x y) = onLiftM2 (-) evalArith x y
+evalArith (Times x y) = onLiftM2 (*) evalArith x y
+```
+
+## Conclusion
+
+And that's it! We started with some repetitive code and used the power of type-driven development and monads to...
+increase the size of the code (measured in number of characters) by about 40%! One might look at that result ask why we bothered doing all of this. While eliminating repetition _can_ (and often does, at larger scales) decrease code size, that's not its primary goal.
+
+Eliminating repetition serves primarily to decrease cognitive load. At first, one might disagree with that conclusion. It is clearly easier to write repetitive code. After all, the repetitive solution was the first we came up with, and it worked fine. To understand the final version, you have to understand `on`, `liftM2`, `Reader`, and more! Surely that makes the cognitive load associated with the final version higher!
+
+I would disagree. Decreasing cognitive load is something that is becoming increasingly popular in  modern programming (largely inspired by functional programming). It manifests itself as things like static typing or Rust's borrow checker, neither of which are always _easy_ to work with/around. Even so, by their nature, they limit the number of things programmers have to think about. Similarly, recognizing and abstracting patterns allows readers of code to learn something once and then re-use that knowledge where the abstraction is used. 
+
+This specific example _is_ over-engineered, but the same principles apply when working with much larger codebases where the benefits increase exponentially. And, of course, it was really about the friends we made along the way.
