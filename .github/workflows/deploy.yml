@@ -35,6 +35,7 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
 
       - run: npm run build
+      - run: npm run export
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
