@@ -19,3 +19,7 @@ body {
 .post h3 {
   @apply text-xl font-bold;
 }
+
+.post code {
+  @apply text-base;
+}

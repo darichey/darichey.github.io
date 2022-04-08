@@ -18,7 +18,7 @@ const Header = ({ title, subtitle }: Props) => {
         />
       </div>
 
-      <div>
+      <div className="text-center md:text-left">
         <h1 className="text-5xl font-bold text-sky-600 mb-4">{title}</h1>
         <h2 className="text-3xl font-bold">{subtitle}</h2>
       </div>
