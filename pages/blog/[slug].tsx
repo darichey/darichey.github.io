@@ -22,7 +22,7 @@ export default function BlogPage({ post }: Props) {
         <h3>{post.date}</h3>
       </div>
 
-      <div className="post flex flex-col gap-4 text-xl leading-relaxed content">
+      <div className="prose prose-lg">
         <Component />
       </div>
     </>
