@@ -1,0 +1,202 @@
+---
+title: "Math magic"
+subtitle: "Explaining a card trick with math"
+date: "2022-08-04"
+---
+
+A few weeks ago, someone showed me a cool card trick. She also said that the trick was entirely math-based. The
+following post documents how I learned how the trick works, formally proving how it works, and generalizing it
+to generate new tricks with math!
+
+## The Trick
+
+First, I'll demonstrate the trick as it was demonstrated to me. The trick requires a 21 cards which are laid out
+in 3 columns of 7 like so:
+
+TODO: Diagram
+
+The mathemagician asks a volunteer to pick a card and memorize it. Then, the volunteer tells the mathemagician which
+column (1, 2, or 3) their card is in. Throughout the trick, this is the only information the volunteer gives about
+their chosen card.
+
+Let's play the role of volunteer and pick the two of hearts. It's in the first column, and we tell that to the
+mathemagician. They then pick up the cards and deal them out again in an arrangement of 3 columns of 7 (don't worry
+about how they do this for now). After they're done, the cards are laid out like so:
+
+TODO Diagram
+
+Notice that our two of hearts is now in the third column. Again, we tell that to the mathemagician, and they repeat,
+laying out the cards like so:
+
+TODO Diagram
+
+The two of hearts is now in the second column. Giving that information to the mathemagician one final time, they now
+pick up all of the cards and deal until flipping over the two of hearts and asking "is this your card?". We are
+thoroughly impressed and offer to buy them lunch.
+
+## How it works
+
+Warning! At this point, we peek behind the curtain and ruin the magic...
+
+I'm first going to explain _how_ the trick works (i.e., the process the mathemagician is following). After that, we'll
+look at _why_ it works (i.e., the math behind it).
+
+I alluded to how the trick works earlier:
+
+> They then pick up the cards and deal them out again in an arrangement of 3 columns of 7 (don't worry
+about how they do this for now)
+
+Of course, its the process by which they pick up and rearrange the cards that is the core of the trick. Upon learning
+which column the volunteer's card is in, the mathemagician will pick up the cards in the following order:
+
+1. One of the columns the card _isn't_ in
+2. The column the card _is_ in
+3. The remaining column
+
+For example, when we said our card was in column 1 earlier, the mathemagician could have picked up the columns in
+the order 2, 1, 3 or 3, 1, 2. Here is an example of the former:
+
+TODO Diagram
+
+Either way, column 1 is "in the middle" now. Then, the mathemagician deals the cards into the 3 column arrangement,
+left-to-right, top-down, like so:
+
+TODO Diagram
+
+This process is then repeated two more times. When we said our card was in the third column earlier, the mathemagician
+picked up the columns in order 1, 3, 2 (or 2, 3, 1), and dealt them again. Then, we said the card was in column 2 and
+they picked up the columns in order 1, 2, 3 (or 3, 2, 1).
+
+By this point, _the mathemagician knows exactly where our card is_! It's the TODOth card in the deck! They can
+choose to do the big reveal in any number of ways, but they can now correctly guess what card the volunteer chose in
+the beginning.
+
+## Why it works
+
+Ok... so we can now blindly follow this process and we'll know that the TODOth card is the volunteer's card... But wait,
+what? No matter what card we pick, it will always end up there? Why?
+
+To understand, let's go back to the initial layout of the cards. We're going to assign each "spot" a card can be at a
+number, like so:
+
+TODO diagram
+
+We'll call the the "spot" a card is at its _index_. For example, TODO, and our our two of hearts is at index TODO.
+
+We're interested in how a card's index changes each time the cards are rearranged. After the first rearrangement, the
+two of hearts is now at index TODO:
+
+TODO diagram
+
+And after the second rearrangement, its at index TODO:
+
+TODO diagram
+
+Finally, if the mathemagician were to lay out the cards a third time, the two of hearts would be at index TODO:
+
+TODO diagram
+
+Notice that being at index TODO is the same as being the TODOth card in the deck.
+
+To unlock the "why" behind the trick, we must pay attention to how rearranging the cards changes each card's index. With
+each rearrangement, every card gets sent to a new index. For example, we learned the following in tracking the two of
+hearts above:
+
+* If the volunteer's card is in column 1, the card at index TODO gets sent to index TODO
+* If the volunteer's card is in column 3, the card at index TODO gets sent to index TODO
+* If the volunteer's card is in column 2, the card at index TODO gets sent to index TODO
+
+Since the column the volunteer's card is in always gets put in the middle, the indices those cards get sent to are
+always the same. Specifically, the first card in the column will be sent to index 7, the second card to index 8,
+and so on. This extends the above list of facts like so:
+
+* If the volunteer's card is in column 1...
+  - The card at index 0 gets sent to index 7
+  - The card at index 1 gets sent to index 8
+  - The card at index 2 gets sent to index 9
+  - The card at index 3 gets sent to index 10
+  - The card at index 4 gets sent to index 11
+  - The card at index 5 gets sent to index 12
+  - The card at index 6 gets sent to index 13
+* If the volunteer's card is in column 2...
+  - The card at index 7 gets sent to index 7
+  - The card at index 8 gets sent to index 8
+  - The card at index 9 gets sent to index 9
+  - The card at index 10 gets sent to index 10
+  - The card at index 11 gets sent to index 11
+  - The card at index 12 gets sent to index 12
+  - The card at index 13 gets sent to index 13
+* If the volunteer's card is in column 3...
+  - The card at index 14 gets sent to index 7
+  - The card at index 15 gets sent to index 8
+  - The card at index 16 gets sent to index 9
+  - The card at index 17 gets sent to index 10
+  - The card at index 18 gets sent to index 11
+  - The card at index 19 gets sent to index 12
+  - The card at index 20 gets sent to index 13
+
+TODO diagram
+
+We can formalize this notion of indices being sent to new indices with a function, $f : [0,20] \to [7,13]$ where
+$[m,n] = \{i \mid m \leq i \leq n\}$. We could just define this function in terms of the input-output pairs we have
+above, but this would make it a bit difficult to work with. Instead, we can define it like so:
+
+$$
+f(i) = \left\lfloor \frac{i}{3} \right\rfloor + 7
+$$
+
+Take a moment to double check that this gives the desired behavior!
+
+To recap, we have observed that rather than talking about the cards themselves, we can talk about the "spot" or index
+each card is at, and we have a function that will tell us the new index of each card in the column the volunteer's card
+is in.
+
+At this point, we are well-equipped to formalize the answer to the question "why does this work?". Throughout the trick,
+the mathemagician rearranges the cards three times. After the third rearrangement, no matter what card the volunteer
+chose at the beginning, it will now be at index 10. Since "card rearrangement" can be represented by $f$, we can
+formalize this statement like so:
+
+$$
+\forall i \in [0,20].\ f(f(f(i))) = 10
+$$
+
+Now, answering "why" is the same as proving this statement... so let's do that! First, we'll expand $f(f(f(i)))$
+simply by repeatedly applying the definition of $f$.
+
+$$
+\begin{align*}
+  f(f(f(i))) & = \left\lfloor \frac{f(f(i))}{3} \right\rfloor + 7 \\
+             & = \left\lfloor \frac{ \left\lfloor \frac{f(i)}{3} \right\rfloor + 7 }{3} \right\rfloor + 7 \\
+             & = \left\lfloor \frac{ \left\lfloor \frac{ \left\lfloor \frac{i}{3} \right\rfloor + 7 }{3} \right\rfloor + 7 }{3} \right\rfloor + 7 \\
+\end{align*}
+$$
+
+Yuck! Luckily, we can simplify this a lot by making use of the following property:
+
+$$
+\forall m \in \mathbb{Z}.\ \forall n \in \mathbb{Z}^+.\ \left \lfloor \frac{x + m}{n} \right \rfloor = \left \lfloor \frac{\lfloor x \rfloor + m}{n} \right \rfloor
+$$
+
+Since $3$ and $7$ are positive integers, we can repeatedly apply this property to get rid of some floors and start simplifying:
+
+$$
+\begin{align*}
+  f(f(f(i))) & = \left\lfloor \frac{ \left\lfloor \frac{ \left\lfloor \frac{i}{3} \right\rfloor + 7 }{3} \right\rfloor + 7 }{3} \right\rfloor + 7 \\
+             & = \left\lfloor \frac{ \left\lfloor \frac{ \frac{i}{3} + 7 }{3} \right\rfloor + 7 }{3} \right\rfloor + 7 \\
+             & = \left\lfloor \frac{ \frac{ \frac{i}{3} + 7 }{3} + 7 }{3} \right\rfloor + 7 \\
+             & = \left\lfloor \frac{ \frac{ \frac{i}{3} + 7 }{3} + 7 }{3} + 7\right\rfloor \\
+             & = \left\lfloor \frac{i + 273}{27} \right\rfloor
+\end{align*}
+$$
+
+Now, remember that $i$ is at least $0$ and at most $20$. This gives the following inequalities:
+
+$$
+\def\arraystretch{1.5}
+\begin{array}{rcccl}
+\frac{0 + 273}{27} & \leq & \frac{i + 273}{27} & \leq & \frac{20 + 273}{27} \\
+10.\overline{1} & \leq & \frac{i + 273}{27} & \leq & 10.\overline{851}
+\end{array}
+$$
+
+So clearly $\left\lfloor \frac{i + 273}{27} \right\rfloor = 10$.
