@@ -7,19 +7,3 @@ body {
   color: #444;
   font-family: "Trebuchet MS", Helvetica, sans-serif;
 }
-
-.content a {
-  @apply text-sky-400;
-}
-
-.post h2 {
-  @apply text-2xl font-bold;
-}
-
-.post h3 {
-  @apply text-xl font-bold;
-}
-
-.post code {
-  @apply text-base;
-}
