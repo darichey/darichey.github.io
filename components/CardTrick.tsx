@@ -79,7 +79,7 @@ function getNextGameState(curState: GameState, selectedCol: Column): GameState {
     if (curState.round === 2) {
       return {
         state: "done",
-        guess: rearrange(curState.cards, selectedCol)[10],
+        guess: rearrange(curState.cards, selectedCol)[10]!,
       };
     } else {
       return {
@@ -97,7 +97,7 @@ function rearrange(cards: string[], col: Column): string[] {
   function getNthColumn(n: Column): string[] {
     const ret: string[] = [];
     for (let i = 0; i < 7; i++) {
-      ret.push(cards[i * 3 + n]);
+      ret.push(cards[i * 3 + n]!);
     }
     return ret;
   }

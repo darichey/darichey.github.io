@@ -1,5 +1,4 @@
 import type { NextPage } from "next";
-import Header from "../../components/Header";
 import { allPosts } from "contentlayer/generated";
 import Link from "next/link";
 

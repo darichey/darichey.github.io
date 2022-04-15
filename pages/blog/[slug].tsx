@@ -1,6 +1,6 @@
 import { useMDXComponent } from "next-contentlayer/hooks";
 import { allPosts, type Post } from ".contentlayer/generated";
-import { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 
 type Props = {
@@ -39,6 +39,6 @@ export const getStaticPaths: GetStaticPaths = () => {
 };
 
 export const getStaticProps: GetStaticProps = ({ params }) => {
-  const post = allPosts.find((post) => post.slug === params?.slug);
+  const post = allPosts.find((post) => post.slug === params?.["slug"]);
   return { props: { post } };
 };
