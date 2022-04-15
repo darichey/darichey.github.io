@@ -1,5 +1,5 @@
 import CardTrick from "components/CardTrick";
-import { NextPage } from "next";
+import type { NextPage } from "next";
 
 const Cards: NextPage = () => {
   return <CardTrick />
