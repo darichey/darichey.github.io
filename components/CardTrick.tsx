@@ -1,4 +1,5 @@
-import Image from "components/Image";
+import Card from "./Card";
+import Cards from "./Cards";
 import { useState } from "react";
 
 const ALL_CARDS = [
@@ -60,10 +61,10 @@ type Round = 0 | 1 | 2;
 type GameState =
   | { state: "playing"; round: Round; cards: string[] }
   | { state: "done"; guess: string };
-const ROUNDS: Record<Round, string> = {
-  0: "First",
-  1: "Second",
-  2: "Third",
+const ROUND_STRINGS: Record<Round, string> = {
+  0: "First round: which column is your card in?",
+  1: "Second round: which column is your card in now?",
+  2: "Third and final round: which column is your card in now?",
 };
 
 function getInitialGameState(): GameState {
@@ -111,20 +112,6 @@ function rearrange(cards: string[], col: Column): string[] {
   }
 }
 
-const Card = ({ name }: { name: string }) => {
-  const width = 100;
-  const height = width * 1.4;
-
-  return (
-    <Image
-      src={`/img/cards/${name}`}
-      width={width}
-      height={height}
-      alt={name}
-    />
-  );
-};
-
 const CardTrick = () => {
   const [gameState, setGameState] = useState<GameState>(getInitialGameState);
 
@@ -141,32 +128,22 @@ const CardTrick = () => {
   if (gameState.state === "playing") {
     return (
       <div>
-        <div className="grid grid-cols-3 grid-rows-[repeat(6,_3em)_auto] place-items-start justify-items-center">
-          {gameState.cards.map((card, idx) => (
-            <div key={card} style={{ zIndex: Math.floor(idx / 3) }}>
-              <Card name={card} />
-            </div>
-          ))}
-        </div>
+        <Cards cards={gameState.cards} highlighted={["5C.svg"]} />
 
         <div>
-          <p>{ROUNDS[gameState.round]} Round: Which column is your card in?</p>
-          <button className="btn mr-1" onClick={onColumnClick(0)}>
-            0
-          </button>
-          <button className="btn mr-1" onClick={onColumnClick(1)}>
-            1
-          </button>
-          <button className="btn mr-1" onClick={onColumnClick(2)}>
-            2
-          </button>
+          <div>{ROUND_STRINGS[gameState.round]}</div>
+          {[0, 1, 2].map((n) => (
+            <button key={n} className="btn mr-1" onClick={onColumnClick(n as Column)}>
+              {n + 1}
+            </button>
+          ))}
         </div>
       </div>
     );
   } else {
     return (
       <div>
-        <p>This is your card!</p>
+        <div>This is your card!</div>
         <Card name={gameState.guess} />
 
         <div>

@@ -10,29 +10,12 @@ to generate new tricks with math!
 
 ## The Trick
 
-First, I'll demonstrate the trick as it was demonstrated to me. The trick requires a 21 cards which are laid out
-in 3 columns of 7 like so:
+First, I'll demonstrate the trick. The computer will be our mathemagician and you'll be the volunteer. After laying out
+21 cards in 3 columns of 7, the mathemagician asks you to pick a card, any card. The only information you will tell them
+about your card is which of the three columns it's in. After each round, they will rearrange the cards
+(don't worry about how for now) and repeat. After three rounds, they will tell you what your card is!
 
-TODO: Diagram
-
-The mathemagician asks a volunteer to pick a card and memorize it. Then, the volunteer tells the mathemagician which
-column (1, 2, or 3) their card is in. Throughout the trick, this is the only information the volunteer gives about
-their chosen card.
-
-Let's play the role of volunteer and pick the two of hearts. It's in the first column, and we tell that to the
-mathemagician. They then pick up the cards and deal them out again in an arrangement of 3 columns of 7 (don't worry
-about how they do this for now). After they're done, the cards are laid out like so:
-
-TODO Diagram
-
-Notice that our two of hearts is now in the third column. Again, we tell that to the mathemagician, and they repeat,
-laying out the cards like so:
-
-TODO Diagram
-
-The two of hearts is now in the second column. Giving that information to the mathemagician one final time, they now
-pick up all of the cards and deal until flipping over the two of hearts and asking "is this your card?". We are
-thoroughly impressed and offer to buy them lunch.
+<CardTrick />
 
 ## How it works
 
@@ -41,30 +24,31 @@ Warning! At this point, we peek behind the curtain and ruin the magic...
 I'm first going to explain _how_ the trick works (i.e., the process the mathemagician is following). After that, we'll
 look at _why_ it works (i.e., the math behind it).
 
+Let's do the trick again, but track a particular card, the two of hearts.
+
 I alluded to how the trick works earlier:
 
-> They then pick up the cards and deal them out again in an arrangement of 3 columns of 7 (don't worry
-about how they do this for now)
+> After each round, they will rearrange the cards (don't worry about how for now) and repeat.
 
 Of course, its the process by which they pick up and rearrange the cards that is the core of the trick. Upon learning
-which column the volunteer's card is in, the mathemagician will pick up the cards in the following order:
+which column the volunteer's card is in, the mathemagician will pick up the columns of cards in the following order:
 
 1. One of the columns the card _isn't_ in
 2. The column the card _is_ in
 3. The remaining column
 
-For example, when we said our card was in column 1 earlier, the mathemagician could have picked up the columns in
+For example, if you said your card was in column 1 earlier, the mathemagician could have picked up the columns in
 the order 2, 1, 3 or 3, 1, 2. Here is an example of the former:
 
 TODO Diagram
 
-Either way, column 1 is "in the middle" now. Then, the mathemagician deals the cards into the 3 column arrangement,
-left-to-right, top-down, like so:
+Either way, the cards of column 1 are now the middle 7 cards of the deck of 21 cards. Then, the mathemagician deals the
+cards into the 3 column arrangement, left-to-right, top-down, like so:
 
 TODO Diagram
 
-This process is then repeated two more times. When we said our card was in the third column earlier, the mathemagician
-picked up the columns in order 1, 3, 2 (or 2, 3, 1), and dealt them again. Then, we said the card was in column 2 and
+This process is then repeated two more times. If you then said your card was in the third column, the mathemagician
+would pick up the columns in order 1, 3, 2 (or 2, 3, 1), and deal them again. Then, we said the card was in column 2 and
 they picked up the columns in order 1, 2, 3 (or 3, 2, 1).
 
 By this point, _the mathemagician knows exactly where our card is_! It's the TODOth card in the deck! They can
