@@ -1,10 +1,15 @@
 import { allPosts, type Post } from ".contentlayer/generated";
+import CardTrick from "components/CardTrick";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { useMDXComponent } from "next-contentlayer/hooks";
 import Head from "next/head";
 
 type Props = {
   post: Post;
+};
+
+const mdxComponents = {
+  CardTrick,
 };
 
 export default function BlogPage({ post }: Props) {
@@ -23,7 +28,7 @@ export default function BlogPage({ post }: Props) {
       </div>
 
       <div className="prose prose-lg">
-        <Component />
+        <Component components={mdxComponents} />
       </div>
     </>
   );
