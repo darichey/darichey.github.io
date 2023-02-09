@@ -9,7 +9,7 @@ const Header = ({ title, subtitle }: Props) => {
   return (
     <section className="flex flex-col md:flex-row-reverse justify-around items-center">
       <div className="w-52">
-        <Image src="/img/david.png" alt="Picture of me" layout="responsive" width={1} height={1} />
+        <Image src="/img/david.png" alt="Picture of me" sizes="100vw" width={1} height={1} />
       </div>
 
       <div className="text-center md:text-left">
