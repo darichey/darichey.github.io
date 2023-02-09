@@ -13,7 +13,6 @@ export default function Nav() {
     <section className="flex flex-row justify-around">
       <Link href="/" text="Home" />
       <Link href="/blog" text="Blog" />
-      <Link href="https://github.com/darichey" text="GitHub" />
     </section>
   );
 }
