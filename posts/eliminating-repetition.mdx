@@ -40,7 +40,7 @@ let rec eval_arith (s : store) (a: iarith) -> int =
 
 `foo` is a function that applies a function to `a` and `b` and then combines the results of those functions using a
 given binary operator. It has the type `('a -> 'a -> 'b) -> ('c -> 'a) -> 'c -> 'c -> 'b`. A quick
-[hoogle search](https://hoogle.haskell.org/?hoogle=(a%20-%3E%20a%20-%3E%20b)%20-%3E%20(c%20-%3E%20a)%20-%3E%20c%20-%3E%20c%20-%3E%20b)
+[hoogle search](<https://hoogle.haskell.org/?hoogle=(a%20-%3E%20a%20-%3E%20b)%20-%3E%20(c%20-%3E%20a)%20-%3E%20c%20-%3E%20c%20-%3E%20b>)
 shows that Haskell has such a function called `on` in `base`, so let's call it that.
 
 ```ocaml
@@ -217,6 +217,6 @@ increase the size of the code (measured in number of characters) by about 40%! O
 
 Eliminating repetition serves primarily to decrease cognitive load. At first, one might disagree with that conclusion. It is clearly easier to write repetitive code. After all, the repetitive solution was the first we came up with, and it worked fine. To understand the final version, you have to understand `on`, `liftM2`, `Reader`, and more! Surely that makes the cognitive load associated with the final version higher!
 
-I would disagree. Decreasing cognitive load is something that is becoming increasingly popular in  modern programming (largely inspired by functional programming). It manifests itself as things like static typing or Rust's borrow checker, neither of which are always _easy_ to work with/around. Even so, by their nature, they limit the number of things programmers have to think about. Similarly, recognizing and abstracting patterns allows readers of code to learn something once and then re-use that knowledge where the abstraction is used. 
+I would disagree. Decreasing cognitive load is something that is becoming increasingly popular in modern programming (largely inspired by functional programming). It manifests itself as things like static typing or Rust's borrow checker, neither of which are always _easy_ to work with/around. Even so, by their nature, they limit the number of things programmers have to think about. Similarly, recognizing and abstracting patterns allows readers of code to learn something once and then re-use that knowledge where the abstraction is used.
 
 This specific example _is_ over-engineered, but the same principles apply when working with much larger codebases where the benefits increase exponentially. And, of course, it was really about the friends we made along the way.

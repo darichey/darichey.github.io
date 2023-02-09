@@ -1,10 +1,10 @@
 import { defineDocumentType, makeSource } from "contentlayer/source-files";
+import haskell from "highlight.js/lib/languages/haskell";
+import ocaml from "highlight.js/lib/languages/ocaml";
 import rehypeHighlight from "rehype-highlight";
 import rehypeKatex from "rehype-katex";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
-import haskell from "highlight.js/lib/languages/haskell";
-import ocaml from "highlight.js/lib/languages/ocaml";
 
 export const Post = defineDocumentType(() => ({
   name: "Post",
@@ -19,7 +19,7 @@ export const Post = defineDocumentType(() => ({
     slug: {
       type: "string",
       resolve: (doc) => doc._raw.sourceFileName.replace(".mdx", ""),
-    }
+    },
   },
 }));
 
