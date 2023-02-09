@@ -8,14 +8,9 @@ export default function Home() {
 
       <div className="flex flex-col gap-y-4 text-xl leading-relaxed content">
         <p>
-          I&apos;m a senior at UT Dallas pursuing a degree in Computer Science and minoring in
-          Mathematics.
-        </p>
-
-        <p>
-          I mostly program on the JVM with Java, Scala, and Kotlin. Recently, I&apos;ve been
-          learning some Haskell, Rust, and TypeScript. I&apos;m interested in functional
-          programming, programming language design, type theory, and category theory.
+          I&apos;m a software engineer interested in programming languages and functional
+          programming. I recently graduated from UT Dallas where I earned a degree in Computer
+          Science with a minor in Mathematics.
         </p>
 
         <p>
