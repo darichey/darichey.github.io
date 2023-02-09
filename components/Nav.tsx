@@ -2,8 +2,8 @@ import NextLink from "next/link";
 
 const Link = ({ href, text }: { href: string; text: string }) => {
   return (
-    <NextLink href={href}>
-      <a className="font-semibold text-2xl">{text}</a>
+    <NextLink href={href} className="font-semibold text-2xl">
+      {text}
     </NextLink>
   );
 };
