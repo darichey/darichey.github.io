@@ -4,7 +4,7 @@ const customLoader = ({ src }: ImageLoaderProps) => {
   return src;
 };
 
-const Image = (props: ImageProps) => {
+export default function Image(props: ImageProps) {
   return (
     <NextImage
       {...props}
@@ -16,6 +16,4 @@ const Image = (props: ImageProps) => {
       }}
     />
   );
-};
-
-export default Image;
+}

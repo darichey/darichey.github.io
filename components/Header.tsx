@@ -5,7 +5,7 @@ interface Props {
   subtitle: string;
 }
 
-const Header = ({ title, subtitle }: Props) => {
+export default function Header({ title, subtitle }: Props) {
   return (
     <section className="flex flex-col md:flex-row-reverse justify-around items-center">
       <div className="w-52">
@@ -18,6 +18,4 @@ const Header = ({ title, subtitle }: Props) => {
       </div>
     </section>
   );
-};
-
-export default Header;
+}

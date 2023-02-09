@@ -1,8 +1,7 @@
-import type { NextPage } from "next";
 import Header from "../components/Header";
 import Links from "../components/Links";
 
-const Home: NextPage = () => {
+export default function Home() {
   return (
     <>
       <Header title="Hey, I'm David." subtitle="Sometimes I code stuff." />
@@ -30,6 +29,4 @@ const Home: NextPage = () => {
       <Links />
     </>
   );
-};
-
-export default Home;
+}

@@ -1,8 +1,7 @@
 import { allPosts } from "contentlayer/generated";
-import type { NextPage } from "next";
 import Link from "next/link";
 
-const Blog: NextPage = () => {
+export default function Blog() {
   const posts = allPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
@@ -29,6 +28,4 @@ const Blog: NextPage = () => {
       </div>
     </>
   );
-};
-
-export default Blog;
+}

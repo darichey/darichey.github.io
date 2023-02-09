@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "./Image";
 
-const Links = () => {
+export default function Links() {
   return (
     <section className="flex gap-x-5">
       <Link href="https://github.com/darichey">
@@ -15,6 +15,4 @@ const Links = () => {
       </Link>
     </section>
   );
-};
-
-export default Links;
+}

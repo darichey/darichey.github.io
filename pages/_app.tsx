@@ -5,7 +5,7 @@ import Head from "next/head";
 import Nav from "../components/Nav";
 import "../styles/style.css";
 
-function MyApp({ Component, pageProps }: AppProps) {
+export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
@@ -21,5 +21,3 @@ function MyApp({ Component, pageProps }: AppProps) {
     </>
   );
 }
-
-export default MyApp;

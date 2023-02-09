@@ -1,5 +1,5 @@
 import { allPosts, type Post } from ".contentlayer/generated";
-import { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import { GetStaticPaths, GetStaticProps } from "next";
 import { useMDXComponent } from "next-contentlayer/hooks";
 import Head from "next/head";
 
@@ -7,7 +7,7 @@ type Props = {
   post: Post;
 };
 
-const BlogPage: NextPage<Props> = ({ post }) => {
+export default function BlogPage({ post }: Props) {
   const Component = useMDXComponent(post.body.code);
 
   return (
@@ -27,9 +27,7 @@ const BlogPage: NextPage<Props> = ({ post }) => {
       </div>
     </>
   );
-};
-
-export default BlogPage;
+}
 
 export const getStaticPaths: GetStaticPaths = () => {
   return {

@@ -1,14 +1,14 @@
 import NextLink from "next/link";
 
-const Link = ({ href, text }: { href: string; text: string }) => {
+function Link({ href, text }: { href: string; text: string }) {
   return (
     <NextLink href={href} className="font-semibold text-2xl">
       {text}
     </NextLink>
   );
-};
+}
 
-const Nav = () => {
+export default function Nav() {
   return (
     <section className="flex flex-row justify-around">
       <Link href="/" text="Home" />
@@ -16,6 +16,4 @@ const Nav = () => {
       <Link href="https://github.com/darichey" text="GitHub" />
     </section>
   );
-};
-
-export default Nav;
+}
