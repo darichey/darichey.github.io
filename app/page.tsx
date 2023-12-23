@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
 import Header from "../components/Header";
 import Links from "../components/Links";
+
+export const metadata: Metadata = {
+  title: "David Richey",
+};
 
 export default function Home() {
   return (

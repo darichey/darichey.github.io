@@ -1,6 +1,10 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { allPosts } from "./[slug]/posts";
 
-const allPosts: Array<{ date: string; title: string; slug: string }> = [];
+export const metadata: Metadata = {
+  title: "David Richey - Blog",
+};
 
 export default function Blog() {
   const posts = allPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
