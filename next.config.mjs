@@ -7,6 +7,7 @@ import rehypeKatex from "rehype-katex";
 
 import haskell from "highlight.js/lib/languages/haskell";
 import ocaml from "highlight.js/lib/languages/ocaml";
+import typescript from "highlight.js/lib/languages/typescript";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -18,7 +19,7 @@ const nextConfig = {
 const withMDX = createMDX({
   options: {
     remarkPlugins: [remarkGfm, remarkMath],
-    rehypePlugins: [[rehypeHighlight, { languages: { haskell, ocaml } }], rehypeKatex],
+    rehypePlugins: [[rehypeHighlight, { languages: { haskell, ocaml, typescript } }], rehypeKatex],
   },
 });
 

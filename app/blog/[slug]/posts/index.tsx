@@ -1,6 +1,7 @@
 import EliminatingRepetition from "./eliminating-repetition.mdx";
 import MathMagic from "./math-magic.mdx";
 import Test from "./test.mdx";
+import RssWithNextjs from "./rss-with-nextjs.mdx";
 
 interface Post {
   title: string;
@@ -35,6 +36,14 @@ const allPosts: Array<Post> = [
     slug: "math-magic",
     publish: false,
     component: <MathMagic />,
+  },
+  {
+    title: "Adding an RSS feed to your static Next.js site",
+    subtitle: "A quick explanation of how I added an RSS feed to my blog",
+    date: "2023-12-23",
+    slug: "rss-with-nextjs",
+    publish: true,
+    component: <RssWithNextjs />,
   },
 ];
 

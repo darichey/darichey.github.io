@@ -1,0 +1,49 @@
+While fixing up this blog, I decided I wanted to publish an RSS feed for it. I struggled a bit at
+first to figure out the best way to do this properly in a fully static Next.js site, so I'm
+writing this in case it might help someone in the future.
+
+So... here it is:
+```ts
+// /app/rss.xml/route.ts
+import { Feed } from "feed";
+
+export async function GET() {
+  const feed = new Feed({
+    title: "David Richey's Blog",
+    description: "My personal blog, mostly about programming",
+    id: "https://darichey.com",
+    link: "https://darichey.com",
+    copyright: "All rights reserved",
+  });
+
+  // get allMyPosts from somewhere, populate the feed somehow
+  for (const post of allMyPosts) {
+    feed.addItem({
+      title: post.title,
+      description: post.subtitle,
+      date: new Date(post.date),
+      link: post.link,
+    });
+  }
+
+  return new Response(feed.rss2());
+}
+```
+That's all it takes! You can stop reading now if that's all you need.
+
+## Details
+This takes advantage of Next.js [Route Handlers](https://nextjs.org/docs/app/building-your-application/routing/route-handlers).
+This approach was non-obvious to me, because, in my goal to create a static site, I had previously dismissed route handlers
+as a feature I could use. I viewed them as a purely dynamic thing (how is my static site going to handle a request?), but
+that is not the case! Specifically, `GET` handlers ["render to a static file during `next build`"](https://nextjs.org/docs/app/building-your-application/deploying/static-exports#route-handlers).
+
+In fact... this exact RSS use case [is an example in the docs](https://nextjs.org/docs/app/building-your-application/routing/route-handlers#non-ui-responses)! In my defense, I did search 🥲
+![an image of the Next.js docs site with the search query "rss". No results are found.](/img/posts/rss-with-nextjs/search.png)
+
+## Alternatives
+Before backing up and considering route handlers, I tried a few different things...
+- Writing `out/rss.xml` or `public/rss.xml` in `generateStaticParams()`. I saw a couple resources online recommending this approach, but it is flawed, because it doesn't work correctly in _both_ `next dev` and `next build`.
+- Adding an extra step to my build script to run a program to generate `out/rss.xml`. This was annoying, because I couldn't easily share the code for getting `allMyPosts` between the Next.js app and this other program.
+- Creating a webpack plugin to generate the file. I was getting truly desparate.
+
+In the end, I'm glad I stopped and read through the docs again, because the final product is infinitely better than any of those!
