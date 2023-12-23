@@ -1,19 +1,11 @@
-import { allPosts, type Post } from ".contentlayer/generated";
-import CardTrick from "components/CardTrick";
-import { GetStaticPaths, GetStaticProps } from "next";
-import { useMDXComponent } from "next-contentlayer/hooks";
 import Head from "next/head";
 
-type Props = {
-  post: Post;
-};
-
-const mdxComponents = {
-  CardTrick,
-};
-
-export default function BlogPage({ post }: Props) {
-  const Component = useMDXComponent(post.body.code);
+export default function BlogPage() {
+  const post = {
+    title: "temp title",
+    subtitle: "temp subtitle",
+    date: "temp date",
+  };
 
   return (
     <>
@@ -27,21 +19,7 @@ export default function BlogPage({ post }: Props) {
         <h3>{post.date}</h3>
       </div>
 
-      <div className="prose prose-lg">
-        <Component components={mdxComponents} />
-      </div>
+      <div className="prose prose-lg">{/* <Component components={mdxComponents} /> */}</div>
     </>
   );
 }
-
-export const getStaticPaths: GetStaticPaths = () => {
-  return {
-    paths: allPosts.map((post) => ({ params: { slug: post.slug } })),
-    fallback: false,
-  };
-};
-
-export const getStaticProps: GetStaticProps = ({ params }) => {
-  const post = allPosts.find((post) => post.slug === params?.["slug"]);
-  return { props: { post } };
-};

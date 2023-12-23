@@ -1,5 +1,6 @@
-import { allPosts } from "contentlayer/generated";
 import Link from "next/link";
+
+const allPosts: Array<{ date: string; title: string; slug: string }> = [];
 
 export default function Blog() {
   const posts = allPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());

@@ -17,7 +17,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "useDefineForClassFields": true,
-    "importsNotUsedAsValues": "error",
+    "verbatimModuleSyntax": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "alwaysStrict": true,
@@ -38,15 +38,11 @@
     "strictPropertyInitialization": true,
     "useUnknownInCatchVariables": true,
     "baseUrl": ".",
-    "paths": {
-      "contentlayer/generated": ["./.contentlayer/generated"]
-    }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".contentlayer/generated"
   ],
   "exclude": ["node_modules"]
 }
