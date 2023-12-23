@@ -13,8 +13,6 @@ export async function generateStaticParams(): Promise<Params[]> {
   return publishedPosts.map(({ slug }) => ({ slug }));
 }
 
-export const dynamicParams = false;
-
 export async function generateMetadata(
   { params }: Props,
   _parent: ResolvingMetadata,
