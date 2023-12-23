@@ -1,27 +1,39 @@
-import Head from "next/head";
-import { allPosts } from "./posts";
+import { getPost, publishedPosts } from "./posts";
+import type { Metadata, ResolvingMetadata } from "next";
 
-export async function generateStaticParams() {
-  return allPosts;
+interface Params {
+  slug: string;
+}
+
+interface Props {
+  params: Params;
+}
+
+export async function generateStaticParams(): Promise<Params[]> {
+  return publishedPosts.map(({ slug }) => ({ slug }));
 }
 
 export const dynamicParams = false;
 
-export default function BlogPost({ params: { slug } }: { params: { slug: string } }) {
-  const post = allPosts.find((p) => p.slug === slug)!;
+export async function generateMetadata(
+  { params }: Props,
+  _parent: ResolvingMetadata,
+): Promise<Metadata> {
+  return {
+    title: getPost(params.slug).title,
+  };
+}
+
+export default function BlogPost({ params: { slug } }: Props) {
+  const post = getPost(slug);
 
   return (
     <>
-      <Head>
-        <title>{post.title}</title>
-      </Head>
-
       <div className="text-center border-y-2 py-5">
         <h1 className="text-4xl font-bold text-sky-600">{post.title}</h1>
         <h2>{post.subtitle}</h2>
         <h3>{post.date}</h3>
       </div>
-
       <div className="prose prose-lg">{post.component}</div>
     </>
   );
