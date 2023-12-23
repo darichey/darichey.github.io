@@ -10,6 +10,7 @@ import ocaml from "highlight.js/lib/languages/ocaml";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: "export",
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
 };
 
