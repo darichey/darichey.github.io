@@ -132,7 +132,7 @@ foo f g x y = on _ _ x y
 
 Let's take a look at what the compiler has to say about the remaining holes.
 
-```
+```txt
 app/Main.hs:43:18: error:
     • Found hole: _ :: b0 -> b0 -> Reader Store Int
       Where: ‘b0’ is an ambiguous type variable
@@ -159,7 +159,7 @@ foo :: (Int -> Int -> Int) -> (IArith -> Reader Store Int) -> IArith -> IArith -
 foo f g x y = on _ g x y
 ```
 
-```
+```txt
 app/Main.hs:43:18: error:
     • Found hole:
         _ :: Reader Store Int -> Reader Store Int -> Reader Store Int
