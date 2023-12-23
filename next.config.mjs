@@ -11,6 +11,7 @@ import ocaml from "highlight.js/lib/languages/ocaml";
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: "export",
+  images: { unoptimized: true },
   pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
 };
 
