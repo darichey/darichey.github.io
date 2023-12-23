@@ -1,4 +1,4 @@
-import CardTrick from "../../../../components/CardTrick"
+import CardTrick from "../../../../components/CardTrick";
 
 A few weeks ago, someone showed me a cool card trick. She also said that the trick was entirely math-based. The
 following post documents how I learned how the trick works, formally proving how it works, and generalizing it
@@ -82,15 +82,15 @@ To unlock the "why" behind the trick, we must pay attention to how rearranging t
 each rearrangement, every card gets sent to a new index. For example, we learned the following in tracking the two of
 hearts above:
 
-* If the volunteer's card is in column 1, the card at index TODO gets sent to index TODO
-* If the volunteer's card is in column 3, the card at index TODO gets sent to index TODO
-* If the volunteer's card is in column 2, the card at index TODO gets sent to index TODO
+- If the volunteer's card is in column 1, the card at index TODO gets sent to index TODO
+- If the volunteer's card is in column 3, the card at index TODO gets sent to index TODO
+- If the volunteer's card is in column 2, the card at index TODO gets sent to index TODO
 
 Since the column the volunteer's card is in always gets put in the middle, the indices those cards get sent to are
 always the same. Specifically, the first card in the column will be sent to index 7, the second card to index 8,
 and so on. This extends the above list of facts like so:
 
-* If the volunteer's card is in column 1...
+- If the volunteer's card is in column 1...
   - The card at index 0 gets sent to index 7
   - The card at index 1 gets sent to index 8
   - The card at index 2 gets sent to index 9
@@ -98,7 +98,7 @@ and so on. This extends the above list of facts like so:
   - The card at index 4 gets sent to index 11
   - The card at index 5 gets sent to index 12
   - The card at index 6 gets sent to index 13
-* If the volunteer's card is in column 2...
+- If the volunteer's card is in column 2...
   - The card at index 7 gets sent to index 7
   - The card at index 8 gets sent to index 8
   - The card at index 9 gets sent to index 9
@@ -106,7 +106,7 @@ and so on. This extends the above list of facts like so:
   - The card at index 11 gets sent to index 11
   - The card at index 12 gets sent to index 12
   - The card at index 13 gets sent to index 13
-* If the volunteer's card is in column 3...
+- If the volunteer's card is in column 3...
   - The card at index 14 gets sent to index 7
   - The card at index 15 gets sent to index 8
   - The card at index 16 gets sent to index 9
