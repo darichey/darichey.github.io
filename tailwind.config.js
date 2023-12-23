@@ -1,15 +1,15 @@
 module.exports = {
-  content: ["./pages/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
+  content: ["./app/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       typography: {
         lg: {
           css: {
             // Make code blocks take up less space
-            pre: {
+            "pre": {
               "margin-top": "unset",
               "margin-bottom": "unset",
-              padding: "unset",
+              "padding": "unset",
             },
             // Don't include backticks in inline code
             "code::before": {
@@ -25,7 +25,7 @@ module.exports = {
             },
             "h3": {
               "margin-top": "1em",
-            }
+            },
           },
         },
       },
