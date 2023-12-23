@@ -1,3 +1,5 @@
+"use client";
+
 import Card from "./Card";
 import Cards from "./Cards";
 import { useState } from "react";
