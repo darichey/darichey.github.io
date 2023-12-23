@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+    <channel>
+        <title>David Richey's Blog</title>
+        <link>https://darichey.com</link>
+        <description>My personal blog, mostly about programming</description>
+        <lastBuildDate>Sat, 23 Dec 2023 07:05:28 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <copyright>All rights reserved</copyright>
+        <item>
+            <title><![CDATA[Eliminating repetition]]></title>
+            <link>https://darichey.com/blog/eliminating-repetition</link>
+            <guid>https://darichey.com/blog/eliminating-repetition</guid>
+            <pubDate>Fri, 28 Jan 2022 00:00:00 GMT</pubDate>
+            <description><![CDATA[over-engineering a homework assignment for fun]]></description>
+        </item>
+        <item>
+            <title><![CDATA[test post please ignore]]></title>
+            <link>https://darichey.com/blog/test</link>
+            <guid>https://darichey.com/blog/test</guid>
+            <pubDate>Thu, 07 Apr 2022 00:00:00 GMT</pubDate>
+            <description><![CDATA[hello world]]></description>
+        </item>
+    </channel>
+</rss>
