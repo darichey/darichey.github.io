@@ -4,16 +4,16 @@
         <title>David Richey's Blog</title>
         <link>https://darichey.com</link>
         <description>My personal blog, mostly about programming</description>
-        <lastBuildDate>Sat, 23 Dec 2023 07:54:42 GMT</lastBuildDate>
+        <lastBuildDate>Sun, 24 Dec 2023 03:10:56 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <copyright>All rights reserved</copyright>
         <item>
-            <title><![CDATA[Eliminating repetition]]></title>
-            <link>https://darichey.com/blog/eliminating-repetition</link>
-            <guid>https://darichey.com/blog/eliminating-repetition</guid>
-            <pubDate>Fri, 28 Jan 2022 00:00:00 GMT</pubDate>
-            <description><![CDATA[over-engineering a homework assignment for fun]]></description>
+            <title><![CDATA[Adding an RSS feed to your static Next.js site]]></title>
+            <link>https://darichey.com/blog/rss-with-nextjs</link>
+            <guid>https://darichey.com/blog/rss-with-nextjs</guid>
+            <pubDate>Sat, 23 Dec 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[A quick explanation of how I added an RSS feed to my blog]]></description>
         </item>
         <item>
             <title><![CDATA[test post please ignore]]></title>
@@ -23,11 +23,11 @@
             <description><![CDATA[hello world]]></description>
         </item>
         <item>
-            <title><![CDATA[Adding an RSS feed to your static Next.js site]]></title>
-            <link>https://darichey.com/blog/rss-with-nextjs</link>
-            <guid>https://darichey.com/blog/rss-with-nextjs</guid>
-            <pubDate>Sat, 23 Dec 2023 00:00:00 GMT</pubDate>
-            <description><![CDATA[A quick explanation of how I added an RSS feed to my blog]]></description>
+            <title><![CDATA[Eliminating repetition]]></title>
+            <link>https://darichey.com/blog/eliminating-repetition</link>
+            <guid>https://darichey.com/blog/eliminating-repetition</guid>
+            <pubDate>Fri, 28 Jan 2022 00:00:00 GMT</pubDate>
+            <description><![CDATA[over-engineering a homework assignment for fun]]></description>
         </item>
     </channel>
 </rss>
