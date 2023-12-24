@@ -8,11 +8,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <div className="flex justify-center my-10">
-          <div className="flex flex-col w-4/5 md:w-1/3 gap-4">
-            <Nav />
-            {children}
-          </div>
+        <div className="flex flex-col max-w-[80ch] gap-12 justify-center mt-5 mb-20 p-[2ch] mx-auto">
+          <Nav />
+          <div>{children}</div>
         </div>
       </body>
     </html>

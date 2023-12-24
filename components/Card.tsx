@@ -1,4 +1,4 @@
-import Image from "components/Image";
+import Image from "next/image";
 
 const Card = ({ name }: { name: string }) => {
   const width = 100;

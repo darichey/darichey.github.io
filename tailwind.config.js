@@ -4,7 +4,24 @@ module.exports = {
   theme: {
     extend: {
       typography: {
-        lg: {
+        DEFAULT: {
+          css: {
+            // Make code blocks take up less space
+            "pre": {
+              "margin-top": "unset",
+              "margin-bottom": "unset",
+              "padding": "unset",
+            },
+            // Don't include backticks in inline code
+            "code::before": {
+              content: "unset",
+            },
+            "code::after": {
+              content: "unset",
+            },
+          },
+        },
+        xl: {
           css: {
             // Make code blocks take up less space
             "pre": {

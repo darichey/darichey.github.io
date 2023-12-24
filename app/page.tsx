@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Header from "../components/Header";
-import Links from "../components/Links";
+import Link from "next/link";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "David Richey",
@@ -8,25 +8,22 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <>
-      <Header title="Hey, I'm David." subtitle="Sometimes I code stuff." />
-
-      <div className="flex flex-col gap-y-4 text-xl leading-relaxed content">
+    <div className="flex flex-row gap-4">
+      <div className="flex-1 prose lg:prose-xl">
         <p>
-          I&apos;m a software engineer interested in programming languages and functional
-          programming. I recently graduated from UT Dallas where I earned a degree in Computer
-          Science with a minor in Mathematics.
+          <span className="font-bold text-sky-600">Hey, I&apos;m David!</span> I&apos;m a software
+          engineer interested in programming languages and functional programming.
         </p>
-
         <p>
-          I have a passion for teaching, and sometimes I like to write a bit about what I&apos;m
-          learning.
+          I recently graduated from UT Dallas where I earned a degree in Computer Science with a
+          minor in Mathematics. I have a passion for teaching, and sometimes I like to{" "}
+          <Link href="/blog">write a bit about what I&apos;m learning</Link>.
         </p>
-
         <p>Online, I often go by Panda.</p>
       </div>
-
-      <Links />
-    </>
+      <div>
+        <Image src="/img/david.jpeg" alt="Picture of me" width={1} height={1} className="w-40" />
+      </div>
+    </div>
   );
 }
