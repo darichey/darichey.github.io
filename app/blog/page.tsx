@@ -4,6 +4,7 @@ import { publishedPosts } from "./[slug]/posts";
 
 export const metadata: Metadata = {
   title: "David Richey - Blog",
+  description: "My personal blog, mostly about programming",
 };
 
 export default function Blog() {

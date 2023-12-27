@@ -4,6 +4,7 @@ import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "David Richey",
+  description: "David Richey's personal website",
 };
 
 export default function Home() {

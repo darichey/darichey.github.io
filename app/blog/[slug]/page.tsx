@@ -17,8 +17,11 @@ export async function generateMetadata(
   { params }: Props,
   _parent: ResolvingMetadata,
 ): Promise<Metadata> {
+  const post = getPost(params.slug);
   return {
-    title: getPost(params.slug).title,
+    title: post.title,
+    description: post.subtitle,
+    authors: { name: "David Richey" },
   };
 }
 
