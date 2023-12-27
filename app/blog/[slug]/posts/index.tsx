@@ -3,7 +3,7 @@ import MathMagic from "./math-magic.mdx";
 import Test from "./test.mdx";
 import RssWithNextjs from "./rss-with-nextjs.mdx";
 
-interface Post {
+export interface Post {
   title: string;
   subtitle: string;
   date: string;
