@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <div className="flex flex-row gap-4">
+    <div className="flex flex-col-reverse md:flex-row gap-4">
       <div className="flex-1 prose lg:prose-xl">
         <p>
           <span className="font-bold text-sky-600">Hey, I&apos;m David!</span> I&apos;m a software
@@ -22,7 +22,7 @@ export default function Home() {
         </p>
         <p>Online, I often go by Panda.</p>
       </div>
-      <div>
+      <div className="self-center md:self-auto">
         <Image src="/img/david.jpeg" alt="Picture of me" width={1} height={1} className="w-40" />
       </div>
     </div>
