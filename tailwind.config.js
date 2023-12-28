@@ -1,42 +1,20 @@
 /** @type {import('tailwindcss').Config} */
+
+const resetCodeCss = {
+  "code::before": false,
+  "code::after": false,
+};
+
 module.exports = {
   content: ["./app/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       typography: {
         DEFAULT: {
-          css: {
-            // Make code blocks take up less space
-            "pre": {
-              "margin-top": "unset",
-              "margin-bottom": "unset",
-              "padding": "unset",
-            },
-            // Don't include backticks in inline code
-            "code::before": {
-              content: "unset",
-            },
-            "code::after": {
-              content: "unset",
-            },
-          },
+          css: resetCodeCss,
         },
         xl: {
-          css: {
-            // Make code blocks take up less space
-            "pre": {
-              "margin-top": "unset",
-              "margin-bottom": "unset",
-              "padding": "unset",
-            },
-            // Don't include backticks in inline code
-            "code::before": {
-              content: "unset",
-            },
-            "code::after": {
-              content: "unset",
-            },
-          },
+          css: resetCodeCss,
         },
       },
     },
