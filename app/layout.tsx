@@ -10,7 +10,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="dark:bg-zinc-900">
         <div className="flex flex-col max-w-[80ch] gap-12 justify-center mt-5 mb-5 p-[2ch] mx-auto">
           <Nav />
-          <div>{children}</div>
+          {children}
           <footer className="border-t-[1px] border-t-slate-900 dark:border-t-white p-2"></footer>
         </div>
       </body>

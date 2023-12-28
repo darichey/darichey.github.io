@@ -29,15 +29,13 @@ export default function BlogPost({ params: { slug } }: Props) {
   const post = getPost(slug);
 
   return (
-    <>
-      <div className="prose dark:prose-invert lg:prose-xl">
-        <h1>
-          <div className="mb-4">{post.title}</div>
-          <p className="not-prose text-xl font-normal">{post.subtitle}</p>
-          <p className="not-prose text-lg font-normal text-slate-400">{post.date}</p>
-        </h1>
-        {post.component}
-      </div>
-    </>
+    <div className="prose dark:prose-invert lg:prose-xl max-w-none">
+      <h1>
+        <div className="mb-4">{post.title}</div>
+        <p className="not-prose text-xl font-normal">{post.subtitle}</p>
+        <p className="not-prose text-lg font-normal text-slate-400">{post.date}</p>
+      </h1>
+      {post.component}
+    </div>
   );
 }
