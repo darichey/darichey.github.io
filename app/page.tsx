@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <div className="flex flex-col-reverse md:flex-row gap-4">
-      <div className="flex-1 prose lg:prose-xl">
+      <div className="flex-1 prose dark:prose-invert lg:prose-xl">
         <p>
           <span className="font-bold text-sky-600">Hey, I&apos;m David!</span> I&apos;m a software
           engineer interested in programming languages and functional programming.

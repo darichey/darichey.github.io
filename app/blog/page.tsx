@@ -35,7 +35,7 @@ export default function Blog() {
 
   return (
     <div>
-      <div className="prose lg:prose-xl mb-5">
+      <div className="prose dark:prose-invert lg:prose-xl mb-5">
         <p>
           From time to time, like to write about things that I&apos;m learning - or worse, my{" "}
           <i>opinions</i>. Keep in mind that I am by no means an authoritative source on anything I
@@ -46,12 +46,12 @@ export default function Blog() {
       <ul>
         {posts.map(([year, posts]) => (
           <li key={year}>
-            <div className="text-3xl my-5">{year}</div>
+            <div className="text-3xl my-5 dark:text-white">{year}</div>
             <ul>
               {posts.map((post) => (
                 <li key={post.slug}>
                   <Link href={`/blog/${post.slug}`}>
-                    <div className="border-2 p-4 m-2 prose">
+                    <div className="border-2 p-4 m-2 prose dark:prose-invert">
                       <h3>
                         <div>{post.title}</div>
                         <p className="not-prose font-normal text-base">{post.subtitle}</p>

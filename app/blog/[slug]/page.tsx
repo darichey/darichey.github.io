@@ -30,7 +30,7 @@ export default function BlogPost({ params: { slug } }: Props) {
 
   return (
     <>
-      <div className="prose lg:prose-xl">
+      <div className="prose dark:prose-invert lg:prose-xl">
         <h1>
           <div className="mb-4">{post.title}</div>
           <p className="not-prose text-xl font-normal">{post.subtitle}</p>

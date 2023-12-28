@@ -3,7 +3,7 @@ import Links from "./Links";
 
 function Link({ href, text }: { href: string; text: string }) {
   return (
-    <NextLink href={href} className="font-semibold text-2xl text-gray-900">
+    <NextLink href={href} className="font-semibold text-2xl text-gray-900 dark:text-white">
       {text}
     </NextLink>
   );
