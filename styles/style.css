@@ -16,3 +16,9 @@ body {
 pre, pre code {
   font-size: 0.9em;
 }
+
+@media (prefers-color-scheme: light) {
+  .hljs {
+    @apply bg-zinc-50; /* modified to give code blocks some background color */
+  }
+}
