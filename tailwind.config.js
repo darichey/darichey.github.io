@@ -1,8 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 
-const resetCodeCss = {
+const customCss = {
   "code::before": false,
   "code::after": false,
+  "blockquote": {
+    quotes: "none",
+  },
 };
 
 module.exports = {
@@ -11,10 +14,10 @@ module.exports = {
     extend: {
       typography: {
         DEFAULT: {
-          css: resetCodeCss,
+          css: customCss,
         },
         xl: {
-          css: resetCodeCss,
+          css: customCss,
         },
       },
     },

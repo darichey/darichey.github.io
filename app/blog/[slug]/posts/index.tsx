@@ -2,6 +2,7 @@ import EliminatingRepetition from "./eliminating-repetition.mdx";
 import MathMagic from "./math-magic.mdx";
 import Test from "./test.mdx";
 import RssWithNextjs from "./rss-with-nextjs.mdx";
+import ReverseEngineerMonitor from "./reverse-engineer-monitor.mdx";
 
 export interface Post {
   title: string;
@@ -44,6 +45,14 @@ const allPosts: Array<Post> = [
     slug: "rss-with-nextjs",
     publish: true,
     component: <RssWithNextjs />,
+  },
+  {
+    title: "Reverse engineering my monitor's KVM",
+    subtitle: "Getting my new KVM to work on MacOS and Linux",
+    date: "2024-10-26",
+    slug: "reverse-engineer-monitor",
+    publish: true,
+    component: <ReverseEngineerMonitor />,
   },
 ];
 
