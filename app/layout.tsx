@@ -12,6 +12,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
           <footer className="border-t-[1px] border-t-slate-900 dark:border-t-white p-2"></footer>
         </div>
+        {/* <!-- Cloudflare Web Analytics --> */}
+        <script
+          defer
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon='{"token": "2528fc4222c149de98520723b79f907b"}'
+        ></script>
+        {/* <!-- End Cloudflare Web Analytics --> */}
       </body>
     </html>
   );
