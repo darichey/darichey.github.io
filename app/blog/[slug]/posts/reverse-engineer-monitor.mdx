@@ -89,7 +89,7 @@ We also now have the device's Vendor ID (`0x1462`) and Product ID (`0x3fa4`) whi
 
 Now let's figure out how to detect when the button is pressed. I filtered down to `1.7.x` and observed the traffic:
 
-<video autoplay loop muted playsinline controls>
+<video autoPlay loop muted playsInline controls>
   <source src="/img/posts/reverse-engineering-monitor/polling.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
@@ -124,7 +124,7 @@ really the request was `01 35 38 30 30 31 31 30 0d` and the response was
 I've highlighted the responses with that body in red above. Now let's see what happens
 if we press the button a couple of times.
 
-<video autoplay loop muted playsinline controls>
+<video autoPlay loop muted playsInline controls>
   <source src="/img/posts/reverse-engineering-monitor/pressed.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
@@ -254,7 +254,7 @@ We can adjust our Rust program to send this packet after detecing that the butto
 
 And... we're done! After some extra polish, I ran the program on both my desktop and laptop and it just worked!
 
-<video autoplay loop muted playsinline controls>
+<video autoPlay loop muted playsInline controls>
   <source src="/img/posts/reverse-engineering-monitor/done.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
