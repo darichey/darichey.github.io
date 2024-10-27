@@ -4,7 +4,7 @@
         <title>David Richey's Blog</title>
         <link>https://darichey.com</link>
         <description>My personal blog, mostly about programming</description>
-        <lastBuildDate>Thu, 28 Dec 2023 02:13:37 GMT</lastBuildDate>
+        <lastBuildDate>Sun, 27 Oct 2024 20:53:44 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
         <copyright>All rights reserved</copyright>
@@ -28,6 +28,13 @@
             <guid>https://darichey.com/blog/rss-with-nextjs</guid>
             <pubDate>Sat, 23 Dec 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[A quick explanation of how I added an RSS feed to my blog]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Reverse engineering my monitor's KVM]]></title>
+            <link>https://darichey.com/blog/reverse-engineer-monitor</link>
+            <guid>https://darichey.com/blog/reverse-engineer-monitor</guid>
+            <pubDate>Sat, 26 Oct 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[Getting my new KVM to work on MacOS and Linux]]></description>
         </item>
     </channel>
 </rss>
