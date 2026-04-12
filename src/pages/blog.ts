@@ -1,10 +1,8 @@
 import { layout } from "../layout.js";
-import { getPublishedPosts } from "../posts.js";
+import type { Post } from "../posts.js";
 
-export function renderBlogIndex(): string {
-  const posts = getPublishedPosts();
-
-  const grouped = new Map<number, typeof posts>();
+export function renderBlogIndex(posts: Post[]): string {
+  const grouped = new Map<number, Post[]>();
   for (const post of posts) {
     const year = new Date(post.date).getUTCFullYear();
     if (!grouped.has(year)) grouped.set(year, []);

@@ -1,5 +1,13 @@
 import fs from "node:fs";
 import path from "node:path";
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
+import remarkRehype from "remark-rehype";
+import rehypeKatex from "rehype-katex";
+import rehypeHighlight from "rehype-highlight";
+import rehypeStringify from "rehype-stringify";
 
 export interface Post {
   title: string;
@@ -8,9 +16,19 @@ export interface Post {
   slug: string;
   publish: boolean;
   content: string;
+  html: string;
 }
 
 const POSTS_DIR = "posts";
+
+const processor = unified()
+  .use(remarkParse)
+  .use(remarkGfm)
+  .use(remarkMath)
+  .use(remarkRehype)
+  .use(rehypeKatex)
+  .use(rehypeHighlight)
+  .use(rehypeStringify);
 
 function parseFrontmatter(raw: string): { meta: Record<string, string>; content: string } {
   const match = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
@@ -27,26 +45,31 @@ function parseFrontmatter(raw: string): { meta: Record<string, string>; content:
   return { meta, content: match[2] };
 }
 
-export function getAllPosts(): Post[] {
+export async function getAllPosts(): Promise<Post[]> {
   const files = fs.readdirSync(POSTS_DIR).filter((f) => f.endsWith(".mdx"));
 
-  return files.map((file) => {
-    const raw = fs.readFileSync(path.join(POSTS_DIR, file), "utf-8");
-    const { meta, content } = parseFrontmatter(raw);
+  return Promise.all(
+    files.map(async (file) => {
+      const raw = fs.readFileSync(path.join(POSTS_DIR, file), "utf-8");
+      const { meta, content } = parseFrontmatter(raw);
+      const result = await processor.process(content);
 
-    return {
-      title: meta.title,
-      subtitle: meta.subtitle,
-      date: meta.date,
-      slug: path.basename(file, ".mdx"),
-      publish: meta.publish === "true",
-      content,
-    };
-  });
+      return {
+        title: meta.title,
+        subtitle: meta.subtitle,
+        date: meta.date,
+        slug: path.basename(file, ".mdx"),
+        publish: meta.publish === "true",
+        content,
+        html: String(result),
+      };
+    })
+  );
 }
 
-export function getPublishedPosts(): Post[] {
-  return getAllPosts()
+export async function getPublishedPosts(): Promise<Post[]> {
+  const posts = await getAllPosts();
+  return posts
     .filter((p) => p.publish)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
