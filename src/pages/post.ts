@@ -3,7 +3,7 @@ import type { Post } from "../posts.js";
 
 export function renderPost(post: Post): string {
   return layout(
-    `${post.title} - David Richey`,
+    { title: `${post.title} - David Richey`, description: post.subtitle, path: `/blog/${post.slug}` },
     `<article>
       <header>
         <h1>${post.title}</h1>

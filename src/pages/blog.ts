@@ -35,7 +35,7 @@ export function renderBlogIndex(posts: Post[]): string {
     .join("\n");
 
   return layout(
-    "David Richey - Blog",
+    { title: "David Richey - Blog", description: "My personal blog, mostly about programming", path: "/blog" },
     `<div>
       <p>
         From time to time, I like to write about things that I'm learning - or

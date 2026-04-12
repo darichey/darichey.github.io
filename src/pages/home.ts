@@ -2,7 +2,7 @@ import { layout } from "../layout.js";
 
 export function renderHome(): string {
   return layout(
-    "David Richey",
+    { title: "David Richey", path: "/" },
     `<div>
       <p>
         <strong>Hey, I'm David!</strong> I'm a software engineer interested in
