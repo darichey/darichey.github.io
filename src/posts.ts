@@ -10,6 +10,9 @@ import rehypeHighlight from "rehype-highlight";
 import rehypeStringify from "rehype-stringify";
 import haskell from "highlight.js/lib/languages/haskell";
 import ocaml from "highlight.js/lib/languages/ocaml";
+import typescript from "highlight.js/lib/languages/typescript";
+import rust from "highlight.js/lib/languages/rust";
+import diff from "highlight.js/lib/languages/diff";
 
 export interface Post {
   title: string;
@@ -29,7 +32,7 @@ const processor = unified()
   .use(remarkMath)
   .use(remarkRehype)
   .use(rehypeKatex)
-  .use(rehypeHighlight, { languages: { haskell, ocaml } })
+  .use(rehypeHighlight, { languages: { haskell, ocaml, typescript, rust, diff } })
   .use(rehypeStringify);
 
 function parseFrontmatter(raw: string): { meta: Record<string, string>; content: string } {
