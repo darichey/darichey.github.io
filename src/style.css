@@ -75,6 +75,17 @@ nav a:hover {
 
 /* Main */
 
+main img,
+main video {
+  max-width: 100%;
+  height: auto;
+}
+
+main ul,
+main ol {
+  padding-left: 2rem;
+}
+
 main a {
   color: var(--link);
 }
@@ -105,6 +116,56 @@ main p {
     flex-direction: column-reverse;
     align-items: center;
   }
+}
+
+/* Code blocks */
+
+pre {
+  padding: 1rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+code {
+  font-family: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
+}
+
+:not(pre) > code {
+  padding: 0.15em 0.35em;
+  border-radius: 3px;
+  background: #f1f5f9;
+  font-size: 0.9em;
+}
+
+@media (prefers-color-scheme: dark) {
+  :not(pre) > code {
+    background: #334155;
+  }
+}
+
+/* Article header */
+
+article header {
+  margin-bottom: 2rem;
+}
+
+article header h1 {
+  margin-bottom: 0.25rem;
+}
+
+article header .subtitle {
+  font-size: 1.25rem;
+  font-weight: normal;
+  margin-bottom: 0.25rem;
+}
+
+article header .date {
+  font-size: 1.125rem;
+  font-weight: normal;
+  color: var(--text-muted);
 }
 
 /* Footer */

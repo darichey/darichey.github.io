@@ -17,6 +17,10 @@ async function build() {
 
   // Copy CSS
   fs.copyFileSync("src/style.css", path.join(OUT_DIR, "style.css"));
+  fs.copyFileSync("node_modules/highlight.js/styles/github.css", path.join(OUT_DIR, "hljs-light.css"));
+  fs.copyFileSync("node_modules/highlight.js/styles/github-dark.css", path.join(OUT_DIR, "hljs-dark.css"));
+  fs.copyFileSync("node_modules/katex/dist/katex.min.css", path.join(OUT_DIR, "katex.css"));
+  fs.cpSync("node_modules/katex/dist/fonts", path.join(OUT_DIR, "fonts"), { recursive: true });
 
   // Render pages
   const posts = await getPublishedPosts();

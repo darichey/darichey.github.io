@@ -8,6 +8,8 @@ import remarkRehype from "remark-rehype";
 import rehypeKatex from "rehype-katex";
 import rehypeHighlight from "rehype-highlight";
 import rehypeStringify from "rehype-stringify";
+import haskell from "highlight.js/lib/languages/haskell";
+import ocaml from "highlight.js/lib/languages/ocaml";
 
 export interface Post {
   title: string;
@@ -27,7 +29,7 @@ const processor = unified()
   .use(remarkMath)
   .use(remarkRehype)
   .use(rehypeKatex)
-  .use(rehypeHighlight)
+  .use(rehypeHighlight, { languages: { haskell, ocaml } })
   .use(rehypeStringify);
 
 function parseFrontmatter(raw: string): { meta: Record<string, string>; content: string } {
