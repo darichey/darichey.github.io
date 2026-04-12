@@ -1,0 +1,13 @@
+{
+  "name": "darichey.com",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc && node dist/build.js"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "typescript": "^5.4.0"
+  }
+}
