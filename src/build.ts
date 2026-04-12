@@ -4,6 +4,8 @@ import { renderHome } from "./pages/home.js";
 import { renderBlogIndex } from "./pages/blog.js";
 import { renderPost } from "./pages/post.js";
 import { getPublishedPosts } from "./posts.js";
+import { renderFeed } from "./feed.js";
+import { render404 } from "./pages/404.js";
 
 const OUT_DIR = "out";
 
@@ -33,6 +35,12 @@ async function build() {
     fs.mkdirSync(postDir, { recursive: true });
     fs.writeFileSync(path.join(postDir, "index.html"), renderPost(post));
   }
+
+  // RSS feed
+  fs.writeFileSync(path.join(OUT_DIR, "rss.xml"), renderFeed(posts));
+
+  // 404 page
+  fs.writeFileSync(path.join(OUT_DIR, "404.html"), render404());
 
   console.log(`Build complete — ${posts.length} posts`);
 }
