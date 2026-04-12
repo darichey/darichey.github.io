@@ -1,0 +1,160 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #ffffff;
+  --text: #111827;
+  --text-muted: #64748b;
+  --accent: #0ea5e9;
+  --border: #111827;
+  --link: #0ea5e9;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #18181b;
+    --text: #ffffff;
+    --text-muted: #94a3b8;
+    --accent: #0ea5e9;
+    --border: #ffffff;
+    --link: #0ea5e9;
+  }
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.7;
+  font-size: 1.125rem;
+}
+
+.site {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  max-width: 80ch;
+  margin: 1.25rem auto;
+  padding: 0 2ch;
+}
+
+/* Nav */
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+
+nav a {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+}
+
+nav a:hover {
+  color: var(--accent);
+}
+
+.social-links {
+  display: flex;
+  gap: 1.25rem;
+  margin-left: auto;
+}
+
+.social-links img {
+  width: 32px;
+  height: 32px;
+}
+
+/* Main */
+
+main a {
+  color: var(--link);
+}
+
+main p {
+  margin-bottom: 1rem;
+}
+
+/* Home */
+
+.home-content {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.home-content .bio strong {
+  color: var(--accent);
+}
+
+.home-content .photo img {
+  width: 160px;
+  border-radius: 4px;
+}
+
+@media (max-width: 640px) {
+  .home-content {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+}
+
+/* Footer */
+
+footer {
+  border-top: 1px solid var(--border);
+  padding: 0.5rem;
+}
+
+/* Blog index */
+
+.blog-list {
+  list-style: none;
+}
+
+.blog-list .year {
+  font-size: 1.875rem;
+  margin: 1.25rem 0;
+}
+
+.blog-list ul {
+  list-style: none;
+}
+
+.blog-list a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  border: 2px solid var(--border);
+  padding: 1rem;
+  margin: 0.5rem 0;
+}
+
+.blog-list a:hover {
+  border-color: var(--accent);
+}
+
+.blog-list h3 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.blog-list .subtitle {
+  font-weight: normal;
+  font-size: 1rem;
+  margin: 0.25rem 0;
+}
+
+.blog-list .date {
+  font-weight: 300;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}

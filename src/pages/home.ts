@@ -3,8 +3,8 @@ import { layout } from "../layout.js";
 export function renderHome(): string {
   return layout(
     "David Richey",
-    `<div>
-      <div>
+    `<div class="home-content">
+      <div class="bio">
         <p>
           <strong>Hey, I'm David!</strong> I'm a software engineer interested in
           programming languages and functional programming.
@@ -16,8 +16,8 @@ export function renderHome(): string {
         </p>
         <p>Online, I often go by Panda.</p>
       </div>
-      <div>
-        <img src="/img/david.jpeg" alt="Picture of me" width="160" />
+      <div class="photo">
+        <img src="/img/david.jpeg" alt="Picture of me" />
       </div>
     </div>`
   );

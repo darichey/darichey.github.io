@@ -17,18 +17,16 @@ export function renderBlogIndex(): string {
     .map(
       ([year, posts]) => `
       <li>
-        <div>${year}</div>
+        <div class="year">${year}</div>
         <ul>
           ${posts
             .map(
               (post) => `
               <li>
                 <a href="/blog/${post.slug}">
-                  <div>
-                    <h3>${post.title}</h3>
-                    <p>${post.subtitle}</p>
-                    <p>${post.date}</p>
-                  </div>
+                  <h3>${post.title}</h3>
+                  <p class="subtitle">${post.subtitle}</p>
+                  <p class="date">${post.date}</p>
                 </a>
               </li>`
             )
@@ -48,7 +46,7 @@ export function renderBlogIndex(): string {
         order to aid my own learning and in the hope that others can learn from them.
       </p>
     </div>
-    <ul>
+    <ul class="blog-list">
       ${list}
     </ul>`
   );
