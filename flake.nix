@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/23.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/24.11";
     flake-utils.url = "github:numtide/flake-utils";
   };
   
@@ -12,7 +12,7 @@
       {
         devShell = pkgs.mkShell {
           buildInputs = with pkgs; [
-            nodejs_20
+            nodejs_22
           ];
         };
       }
