@@ -41,6 +41,7 @@ export function layout(options: LayoutOptions, content: string): string {
     </main>
     <footer></footer>
   </div>
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "2528fc4222c149de98520723b79f907b"}'></script>
 </body>
 </html>`;
 }
