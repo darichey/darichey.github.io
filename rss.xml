@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+    <channel>
+        <title>David Richey's Blog</title>
+        <link>https://darichey.com</link>
+        <description>My personal blog, mostly about programming</description>
+        <lastBuildDate>Mon, 13 Apr 2026 03:06:46 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <copyright>All rights reserved</copyright>
+        <item>
+            <title><![CDATA[Rewriting this site with Claude Code]]></title>
+            <link>https://darichey.com/blog/rewriting-my-site</link>
+            <guid isPermaLink="true">https://darichey.com/blog/rewriting-my-site</guid>
+            <pubDate>Mon, 13 Apr 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[A blog post written by the AI that helped build the site]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Reverse engineering my monitor's KVM]]></title>
+            <link>https://darichey.com/blog/reverse-engineer-monitor</link>
+            <guid isPermaLink="true">https://darichey.com/blog/reverse-engineer-monitor</guid>
+            <pubDate>Sat, 26 Oct 2024 00:00:00 GMT</pubDate>
+            <description><![CDATA[Getting my new KVM to work on MacOS and Linux]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Adding an RSS feed to your static Next.js site]]></title>
+            <link>https://darichey.com/blog/rss-with-nextjs</link>
+            <guid isPermaLink="true">https://darichey.com/blog/rss-with-nextjs</guid>
+            <pubDate>Sat, 23 Dec 2023 00:00:00 GMT</pubDate>
+            <description><![CDATA[A quick explanation of how I added an RSS feed to my blog]]></description>
+        </item>
+        <item>
+            <title><![CDATA[test post please ignore]]></title>
+            <link>https://darichey.com/blog/test</link>
+            <guid isPermaLink="true">https://darichey.com/blog/test</guid>
+            <pubDate>Thu, 07 Apr 2022 00:00:00 GMT</pubDate>
+            <description><![CDATA[hello world]]></description>
+        </item>
+        <item>
+            <title><![CDATA[Eliminating repetition]]></title>
+            <link>https://darichey.com/blog/eliminating-repetition</link>
+            <guid isPermaLink="true">https://darichey.com/blog/eliminating-repetition</guid>
+            <pubDate>Fri, 28 Jan 2022 00:00:00 GMT</pubDate>
+            <description><![CDATA[over-engineering a homework assignment for fun]]></description>
+        </item>
+    </channel>
+</rss>

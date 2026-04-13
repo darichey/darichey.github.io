@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A quick explanation of how I added an RSS feed to my blog">
+  <meta property="og:title" content="Adding an RSS feed to your static Next.js site - David Richey">
+  <meta property="og:description" content="A quick explanation of how I added an RSS feed to my blog">
+  <meta property="og:url" content="https://darichey.com/blog/rss-with-nextjs">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/hljs-light.css" media="(prefers-color-scheme: light)">
+  <link rel="stylesheet" href="/hljs-dark.css" media="(prefers-color-scheme: dark)">
+  <link rel="stylesheet" href="/katex.css">
+  <link rel="alternate" type="application/rss+xml" title="David Richey's Blog" href="/rss.xml">
+  <title>Adding an RSS feed to your static Next.js site - David Richey</title>
+</head>
+<body>
+  <div class="site">
+    <nav>
+      <a href="/">Home</a>
+      <a href="/blog">Blog</a>
+      <div class="social-links">
+        <a href="https://github.com/darichey"><img src="/img/github_mark.svg" alt="GitHub"></a>
+        <a href="https://www.linkedin.com/in/darichey/"><img src="/img/linkedin_mark.svg" alt="LinkedIn"></a>
+        <a href="https://www.threads.net/@davidrichey1"><img src="/img/threads_mark.svg" alt="Threads"></a>
+        <a href="mailto:darichey1@gmail.com"><img src="/img/mail.svg" alt="Email"></a>
+      </div>
+    </nav>
+    <main>
+      <article>
+      <header>
+        <h1>Adding an RSS feed to your static Next.js site</h1>
+        <p class="subtitle">A quick explanation of how I added an RSS feed to my blog</p>
+        <p class="date">2023-12-23</p>
+      </header>
+      <p>While fixing up this blog, I decided I wanted to publish an RSS feed for it. I struggled a bit at
+first to figure out the best way to do this properly in a fully static Next.js site, so I'm
+writing this in case it might help someone in the future.</p>
+<p>So... here it is:</p>
+<pre><code class="hljs language-ts"><span class="hljs-comment">// /app/rss.xml/route.ts</span>
+<span class="hljs-keyword">import</span> { <span class="hljs-title class_">Feed</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">"feed"</span>;
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">GET</span>(<span class="hljs-params"></span>) {
+  <span class="hljs-keyword">const</span> feed = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Feed</span>({
+    <span class="hljs-attr">title</span>: <span class="hljs-string">"David Richey's Blog"</span>,
+    <span class="hljs-attr">description</span>: <span class="hljs-string">"My personal blog, mostly about programming"</span>,
+    <span class="hljs-attr">id</span>: <span class="hljs-string">"https://darichey.com"</span>,
+    <span class="hljs-attr">link</span>: <span class="hljs-string">"https://darichey.com"</span>,
+    <span class="hljs-attr">copyright</span>: <span class="hljs-string">"All rights reserved"</span>,
+  });
+
+  <span class="hljs-comment">// get allMyPosts from somewhere, populate the feed somehow</span>
+  <span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> post <span class="hljs-keyword">of</span> allMyPosts) {
+    feed.<span class="hljs-title function_">addItem</span>({
+      <span class="hljs-attr">title</span>: post.<span class="hljs-property">title</span>,
+      <span class="hljs-attr">description</span>: post.<span class="hljs-property">subtitle</span>,
+      <span class="hljs-attr">date</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>(post.<span class="hljs-property">date</span>),
+      <span class="hljs-attr">link</span>: post.<span class="hljs-property">link</span>,
+    });
+  }
+
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Response</span>(feed.<span class="hljs-title function_">rss2</span>());
+}
+</code></pre>
+<p>That's all it takes! You can stop reading now if that's all you need.</p>
+<h2>Details</h2>
+<p>This takes advantage of Next.js <a href="https://nextjs.org/docs/app/building-your-application/routing/route-handlers">Route Handlers</a>.
+This approach was non-obvious to me, because, in my goal to create a static site, I had previously dismissed route handlers
+as a feature I could use. I viewed them as a purely dynamic thing (how is my static site going to handle a request?), but
+that is not the case! Specifically, <code>GET</code> handlers <a href="https://nextjs.org/docs/app/building-your-application/deploying/static-exports#route-handlers">"render to a static file during <code>next build</code>"</a>.</p>
+<p>In fact... this exact RSS use case <a href="https://nextjs.org/docs/app/building-your-application/routing/route-handlers#non-ui-responses">is an example in the docs</a>! In my defense, I did search 🥲
+<img src="/img/posts/rss-with-nextjs/search.png" alt="an image of the Next.js docs site with the search query &#x22;rss&#x22;. No results are found."></p>
+<h2>Alternatives</h2>
+<p>Before backing up and considering route handlers, I tried a few different things...</p>
+<ul>
+<li>Writing <code>out/rss.xml</code> or <code>public/rss.xml</code> in <code>generateStaticParams()</code>. I saw a couple resources online recommending this approach, but it is flawed, because it doesn't work correctly in <em>both</em> <code>next dev</code> and <code>next build</code>.</li>
+<li>Adding an extra step to my build script to run a program to generate <code>out/rss.xml</code>. This was annoying, because I couldn't easily share the code for getting <code>allMyPosts</code> between the Next.js app and this other program.</li>
+<li>Creating a webpack plugin to generate the file. I was getting truly desparate.</li>
+</ul>
+<p>In the end, I'm glad I stopped and read through the docs again, because the final product is infinitely better than any of those!</p>
+    </article>
+    </main>
+    <footer></footer>
+  </div>
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "2528fc4222c149de98520723b79f907b"}'></script>
+</body>
+</html>

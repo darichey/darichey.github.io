@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="over-engineering a homework assignment for fun">
+  <meta property="og:title" content="Eliminating repetition - David Richey">
+  <meta property="og:description" content="over-engineering a homework assignment for fun">
+  <meta property="og:url" content="https://darichey.com/blog/eliminating-repetition">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/hljs-light.css" media="(prefers-color-scheme: light)">
+  <link rel="stylesheet" href="/hljs-dark.css" media="(prefers-color-scheme: dark)">
+  <link rel="stylesheet" href="/katex.css">
+  <link rel="alternate" type="application/rss+xml" title="David Richey's Blog" href="/rss.xml">
+  <title>Eliminating repetition - David Richey</title>
+</head>
+<body>
+  <div class="site">
+    <nav>
+      <a href="/">Home</a>
+      <a href="/blog">Blog</a>
+      <div class="social-links">
+        <a href="https://github.com/darichey"><img src="/img/github_mark.svg" alt="GitHub"></a>
+        <a href="https://www.linkedin.com/in/darichey/"><img src="/img/linkedin_mark.svg" alt="LinkedIn"></a>
+        <a href="https://www.threads.net/@davidrichey1"><img src="/img/threads_mark.svg" alt="Threads"></a>
+        <a href="mailto:darichey1@gmail.com"><img src="/img/mail.svg" alt="Email"></a>
+      </div>
+    </nav>
+    <main>
+      <article>
+      <header>
+        <h1>Eliminating repetition</h1>
+        <p class="subtitle">over-engineering a homework assignment for fun</p>
+        <p class="date">2022-01-28</p>
+      </header>
+      <p>For a class assignment, I had to write a tiny interpreter for a toy language whose specification was given to us. This
+post explores the process of recognizing and eliminating some repetition in the interpreter.</p>
+<h2>Basic factoring</h2>
+<p>The language has basic arithmetic operations like plus, minus, and times which are modeled in the obvious way. An
+initial attempt at the function for evaluating arithmetic expressions might look something like the
+following.</p>
+<pre><code class="hljs language-ocaml"><span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> eval_arith (s : store) (a: iarith) -> <span class="hljs-built_in">int</span> =
+  <span class="hljs-keyword">match</span> a <span class="hljs-keyword">with</span>
+  ...
+  | <span class="hljs-type">Plus</span> (x, y) -> eval_arith s x + eval_arith s y
+  | <span class="hljs-type">Minus</span> (x, y) -> eval_arith s x - eval_arith s y
+  | <span class="hljs-type">Times</span> (x, y) -> eval_arith s x * eval_arith s y
+</code></pre>
+<p>Note that the <code>store</code> argument maps variable names to integer values. This is the "environment" that evaluation takes place in. Evaluation of plus, minus, and times expressions doesn't immediately need access to variable bindings, so the environment is simply passed through to the evaluations of each sub-expression.</p>
+<p>Honestly, this code is perfectly fine as-is, but I just can't help myself when I see a pattern like that... We can
+factor out the repetition by writing something like:</p>
+<pre><code class="hljs language-ocaml"><span class="hljs-keyword">let</span> foo f g a b = f (g a) (g b)
+
+<span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> eval_arith (s : store) (a: iarith) -> <span class="hljs-built_in">int</span> =
+  <span class="hljs-keyword">match</span> a <span class="hljs-keyword">with</span>
+  ...
+  | <span class="hljs-type">Plus</span> (x, y) -> foo ( + ) (eval_arith s) x y
+  | <span class="hljs-type">Minus</span> (x, y) -> foo ( - ) (eval_arith s) x y
+  | <span class="hljs-type">Times</span> (x, y) -> foo ( * ) (eval_arith s) x y
+</code></pre>
+<p><code>foo</code> is a function that applies a function to <code>a</code> and <code>b</code> and then combines the results of those functions using a
+given binary operator. It has the type <code>('a -> 'a -> 'b) -> ('c -> 'a) -> 'c -> 'c -> 'b</code>. A quick
+<a href="https://hoogle.haskell.org/?hoogle=(a%20-%3E%20a%20-%3E%20b)%20-%3E%20(c%20-%3E%20a)%20-%3E%20c%20-%3E%20c%20-%3E%20b">hoogle search</a>
+shows that Haskell has such a function called <code>on</code> in <code>base</code>, so let's call it that.</p>
+<pre><code class="hljs language-ocaml"><span class="hljs-keyword">let</span> on f g a b = f (g a) (g b)
+
+<span class="hljs-keyword">let</span> <span class="hljs-keyword">rec</span> eval_arith (s : store) (a: iarith) -> <span class="hljs-built_in">int</span> =
+  <span class="hljs-keyword">match</span> a <span class="hljs-keyword">with</span>
+  ...
+  | <span class="hljs-type">Plus</span> (x, y) -> on ( + ) (eval_arith s) x y
+  | <span class="hljs-type">Minus</span> (x, y) -> on ( - ) (eval_arith s) x y
+  | <span class="hljs-type">Times</span> (x, y) -> on ( * ) (eval_arith s) x y
+</code></pre>
+<h2>The Reader Monad</h2>
+<p>At this point, I'm fairly satisfied with this aspect of the implementation, but I want to revisit another aspect that I
+mentioned earlier:</p>
+<blockquote>
+<p>Note that the <code>store</code> argument maps variable names to integer values. This is the "environment" that evaluation takes place in. Evaluation of plus, minus, and times expressions doesn't immediately need access to variable bindings, so the environment is simply passed through to the evaluations of each sub-expression.</p>
+</blockquote>
+<p>Classically, we use the <code>Reader</code> monad to do this environment passing implicitly. I've only been playing with OCaml
+for a week or so, but my understanding is that this kind of functional programming is not quite so popular in OCaml (the standard library does not have <code>Reader</code> and I couldn't find a de facto standard implementation like in Haskell's <code>mtl</code>).
+Given that, I decided to quickly re-implement the language in Haskell where I can make use of <code>mtl</code>, <code>do</code> notation,
+etc..</p>
+<p>Using <code>Reader</code> to pass around the environment, we can write <code>evalArith</code> as follows:</p>
+<pre><code class="hljs language-haskell"><span class="hljs-title">evalArith</span> :: <span class="hljs-type">IArith</span> -> <span class="hljs-type">Reader</span> <span class="hljs-type">Store</span> <span class="hljs-type">Int</span>
+...
+<span class="hljs-title">evalArith</span> (<span class="hljs-type">Plus</span> x y) = <span class="hljs-keyword">do</span>
+  xn &#x3C;- evalArith x
+  yn &#x3C;- evalArith y
+  return $ xn + yn
+<span class="hljs-title">evalArith</span> (<span class="hljs-type">Minus</span> x y) = <span class="hljs-keyword">do</span>
+  xn &#x3C;- evalArith x
+  yn &#x3C;- evalArith y
+  return $ xn - yn
+<span class="hljs-title">evalArith</span> (<span class="hljs-type">Times</span> x y) = <span class="hljs-keyword">do</span>
+  xn &#x3C;- evalArith x
+  yn &#x3C;- evalArith y
+  return $ xn * yn
+</code></pre>
+<p>Success! The environment no longer needs to be explicitly passed down to the sub-computations. Again, there's a
+not-insignificant amount of repetition here. Let's factor it out:</p>
+<pre><code class="hljs language-haskell"><span class="hljs-title">foo</span> :: (<span class="hljs-type">Int</span> -> <span class="hljs-type">Int</span> -> <span class="hljs-type">Int</span>) -> (<span class="hljs-type">IArith</span> -> <span class="hljs-type">Reader</span> <span class="hljs-type">Store</span> <span class="hljs-type">Int</span>) -> <span class="hljs-type">IArith</span> -> <span class="hljs-type">IArith</span> -> <span class="hljs-type">Reader</span> <span class="hljs-type">Store</span> <span class="hljs-type">Int</span>
+<span class="hljs-title">foo'</span> f g x y = <span class="hljs-keyword">do</span>
+  xn &#x3C;- g x
+  yn &#x3C;- g y
+  return $ f xn yn
+
+<span class="hljs-title">evalArith</span> :: <span class="hljs-type">IArith</span> -> <span class="hljs-type">Reader</span> <span class="hljs-type">Store</span> <span class="hljs-type">Int</span>
+...
+<span class="hljs-title">evalArith</span> (<span class="hljs-type">Plus</span> x y) = foo (+) evalArith x y
+<span class="hljs-title">evalArith</span> (<span class="hljs-type">Minus</span> x y) = foo (-) evalArith x y
+<span class="hljs-title">evalArith</span> (<span class="hljs-type">Times</span> x y) = foo (*) evalArith x y
+</code></pre>
+<p>I'm not exactly sure what to call this function yet, but let's move on for now.</p>
+<h2>Combining them</h2>
+<p>I'm still not quite satisfied with this implementation. In the first section, we discovered a function, <code>on</code>, that
+encapsulates the idea of combining the results of applying a function to two different arguments. Now, we're still doing
+that, but we're not using <code>on</code>! Let's see how we can define <code>foo</code> in terms of <code>on</code> to get the best of both worlds.</p>
+<p>To start, let's lay out the types of each function and try to solve the type puzzle (we'll need to figure out how to
+fit together the "pieces").</p>
+<pre><code class="hljs language-haskell"><span class="hljs-title">foo</span> :: (<span class="hljs-type">Int</span> -> <span class="hljs-type">Int</span> -> <span class="hljs-type">Int</span>) -> (<span class="hljs-type">IArith</span> -> <span class="hljs-type">Reader</span> <span class="hljs-type">Store</span> <span class="hljs-type">Int</span>) -> <span class="hljs-type">IArith</span> -> <span class="hljs-type">IArith</span> -> <span class="hljs-type">Reader</span> <span class="hljs-type">Store</span> <span class="hljs-type">Int</span>
+<span class="hljs-title">on</span>  :: (b   -> b   -> c  ) -> (a      -> b               ) -> a      -> a      -> c
+</code></pre>
+<p>Lining up the types like this shows how these have very similar shapes! However, we quickly realize that there's no
+consistent instantiation of the type variables. We have <code>a ~ IArith</code>, but <code>b</code> needs to be both <code>Int</code> and
+<code>Reader Store Int</code> (and similarly for <code>c</code>). This tells us that <code>foo</code> and <code>on</code> aren't the same, so we need <em>something</em> to
+transform one to the other. To determine what that "something" is, let's consider what we have and what we need. We'll
+use typed holes to guide the process.</p>
+<pre><code class="hljs language-haskell"><span class="hljs-title">foo</span> :: (<span class="hljs-type">Int</span> -> <span class="hljs-type">Int</span> -> <span class="hljs-type">Int</span>) -> (<span class="hljs-type">IArith</span> -> <span class="hljs-type">Reader</span> <span class="hljs-type">Store</span> <span class="hljs-type">Int</span>) -> <span class="hljs-type">IArith</span> -> <span class="hljs-type">IArith</span> -> <span class="hljs-type">Reader</span> <span class="hljs-type">Store</span> <span class="hljs-type">Int</span>
+<span class="hljs-title">foo</span> f g x y = on _ _ _ _
+</code></pre>
+<p>We already know that <code>a ~ IArith</code> is valid, and we have two arguments of that type, <code>x</code> and <code>y</code>, so let's plug those in.</p>
+<pre><code class="hljs language-haskell"><span class="hljs-title">foo</span> :: (<span class="hljs-type">Int</span> -> <span class="hljs-type">Int</span> -> <span class="hljs-type">Int</span>) -> (<span class="hljs-type">IArith</span> -> <span class="hljs-type">Reader</span> <span class="hljs-type">Store</span> <span class="hljs-type">Int</span>) -> <span class="hljs-type">IArith</span> -> <span class="hljs-type">IArith</span> -> <span class="hljs-type">Reader</span> <span class="hljs-type">Store</span> <span class="hljs-type">Int</span>
+<span class="hljs-title">foo</span> f g x y = on _ _ x y
+</code></pre>
+<p>Let's take a look at what the compiler has to say about the remaining holes.</p>
+<pre><code class="hljs language-txt">app/Main.hs:43:18: error:
+    • Found hole: _ :: b0 -> b0 -> Reader Store Int
+      Where: ‘b0’ is an ambiguous type variable
+    ...
+   |
+43 | foo f g x y = on _ _ x y
+   |                  ^
+
+app/Main.hs:43:20: error:
+    • Found hole: _ :: IArith -> b0
+      Where: ‘b0’ is an ambiguous type variable
+    ...
+   |
+43 | foo f g x y = on _ _ x y
+   |                    ^
+</code></pre>
+<p>We can see that we have a free type variable, <code>b0</code>. We can also see that the second hole has a shape similar to
+something we have: <code>g :: IArith -> Reader Store Int</code>. Let's plug in <code>g</code> for the second hole (therefore setting
+<code>b0 ~ Reader Store Int</code>) and see what that does for us.</p>
+<pre><code class="hljs language-haskell"><span class="hljs-title">foo</span> :: (<span class="hljs-type">Int</span> -> <span class="hljs-type">Int</span> -> <span class="hljs-type">Int</span>) -> (<span class="hljs-type">IArith</span> -> <span class="hljs-type">Reader</span> <span class="hljs-type">Store</span> <span class="hljs-type">Int</span>) -> <span class="hljs-type">IArith</span> -> <span class="hljs-type">IArith</span> -> <span class="hljs-type">Reader</span> <span class="hljs-type">Store</span> <span class="hljs-type">Int</span>
+<span class="hljs-title">foo</span> f g x y = on _ g x y
+</code></pre>
+<pre><code class="hljs language-txt">app/Main.hs:43:18: error:
+    • Found hole:
+        _ :: Reader Store Int -> Reader Store Int -> Reader Store Int
+    ...
+   |
+43 | foo f g x y = on _ g x y
+   |                  ^
+</code></pre>
+<p>If you squint, the type of <code>f</code> and the type of the hole look kind of similar...</p>
+<pre><code class="hljs language-haskell"><span class="hljs-title">_</span> :: <span class="hljs-type">Reader</span> <span class="hljs-type">Store</span> <span class="hljs-type">Int</span> -> <span class="hljs-type">Reader</span> <span class="hljs-type">Store</span> <span class="hljs-type">Int</span> -> <span class="hljs-type">Reader</span> <span class="hljs-type">Store</span> <span class="hljs-type">Int</span>
+<span class="hljs-title">f</span> ::              <span class="hljs-type">Int</span> ->              <span class="hljs-type">Int</span> ->              <span class="hljs-type">Int</span>
+</code></pre>
+<p>We have a pure function on <code>Int</code>s and we want a similar function on <code>Ints</code> where each argument and the result <em>also</em>
+have an associated environment. In Haskell terms, we want to "lift" the function we have into the Reader monad. This situation turns out to be incredibly common when dealing with monads. For functions of two arguments, Haskell has a function, <code>liftM2</code>, that will do precisely what we want.</p>
+<pre><code class="hljs language-haskell"><span class="hljs-title">liftM2</span> :: <span class="hljs-type">Monad</span> m => (a1 -> a2 -> r) -> m a1 -> m a2 -> m r
+</code></pre>
+<p>Therefore, we can write <code>foo</code> as follows:</p>
+<pre><code class="hljs language-haskell"><span class="hljs-title">foo</span> :: (<span class="hljs-type">Int</span> -> <span class="hljs-type">Int</span> -> <span class="hljs-type">Int</span>) -> (<span class="hljs-type">IArith</span> -> <span class="hljs-type">Reader</span> <span class="hljs-type">Store</span> <span class="hljs-type">Int</span>) -> <span class="hljs-type">IArith</span> -> <span class="hljs-type">IArith</span> -> <span class="hljs-type">Reader</span> <span class="hljs-type">Store</span> <span class="hljs-type">Int</span>
+<span class="hljs-title">foo</span> f g x y = on (liftM2 f) g x y
+</code></pre>
+<p>I'm not sure if there's some kind of naming convention for functions like these, but I went with <code>onLiftM2</code> because...
+it's <code>on</code>... after <code>liftM2</code>. Eta-reducing and generalizing the type signature (which will allow the same function to be used for boolean evaluation!), we arrive at the final definition of both <code>onLiftM2</code> and <code>evalArith</code>.</p>
+<pre><code class="hljs language-haskell"><span class="hljs-title">onLiftM2</span> :: <span class="hljs-type">Monad</span> m => (a -> a -> c) -> (b -> m a) -> b -> b -> m c
+<span class="hljs-title">onLiftM2</span> = on . liftM2
+
+<span class="hljs-title">evalArith</span> :: <span class="hljs-type">IArith</span> -> <span class="hljs-type">Reader</span> <span class="hljs-type">Store</span> <span class="hljs-type">Int</span>
+...
+<span class="hljs-title">evalArith</span> (<span class="hljs-type">Plus</span> x y)  = onLiftM2 (+) evalArith x y
+<span class="hljs-title">evalArith</span> (<span class="hljs-type">Minus</span> x y) = onLiftM2 (-) evalArith x y
+<span class="hljs-title">evalArith</span> (<span class="hljs-type">Times</span> x y) = onLiftM2 (*) evalArith x y
+</code></pre>
+<h2>Conclusion</h2>
+<p>And that's it! We started with some repetitive code and used the power of type-driven development and monads to...
+increase the size of the code (measured in number of characters) by about 40%! One might look at that result ask why we bothered doing all of this. While eliminating repetition <em>can</em> (and often does, at larger scales) decrease code size, that's not its primary goal.</p>
+<p>Eliminating repetition serves primarily to decrease cognitive load. At first, one might disagree with that conclusion. It is clearly easier to write repetitive code. After all, the repetitive solution was the first we came up with, and it worked fine. To understand the final version, you have to understand <code>on</code>, <code>liftM2</code>, <code>Reader</code>, and more! Surely that makes the cognitive load associated with the final version higher!</p>
+<p>I would disagree. Decreasing cognitive load is something that is becoming increasingly popular in modern programming (largely inspired by functional programming). It manifests itself as things like static typing or Rust's borrow checker, neither of which are always <em>easy</em> to work with/around. Even so, by their nature, they limit the number of things programmers have to think about. Similarly, recognizing and abstracting patterns allows readers of code to learn something once and then re-use that knowledge where the abstraction is used.</p>
+<p>This specific example <em>is</em> over-engineered, but the same principles apply when working with much larger codebases where the benefits increase exponentially. And, of course, it was really about the friends we made along the way.</p>
+    </article>
+    </main>
+    <footer></footer>
+  </div>
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "2528fc4222c149de98520723b79f907b"}'></script>
+</body>
+</html>
