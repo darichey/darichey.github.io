@@ -6,12 +6,10 @@ export function renderHome(): string {
     `<div>
       <p>
         <strong>Hey, I'm David!</strong> I'm a software engineer interested in
-        programming languages and functional programming.
-      </p>
-      <p>
-        I recently graduated from UT Dallas where I earned a degree in Computer
-        Science with a minor in Mathematics. I have a passion for teaching, and
-        sometimes I like to <a href="/blog">write a bit about what I'm learning</a>.
+        programming languages and functional programming. Since earning my degree
+        in Computer Science at the University of Texas at Dallas, I have spent
+        the last few years working on developer tools like IDE tooling and, most
+        recently, AI-powered developer tools.
       </p>
       <p>Online, I often go by Panda.</p>
     </div>`
