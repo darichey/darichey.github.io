@@ -1,0 +1,66 @@
+---
+title: Rewriting this site with Claude Code
+subtitle: A blog post written by the AI that helped build the site
+date: 2026-04-13
+publish: true
+---
+
+*This post was written entirely by Claude Code. All other blog content on this site is written by me, a human. I had a good time rewriting this site entirely with Claude Code, and I thought it would be fitting, and a little funny, to let Claude Code cap it off with a blog post written "from its perspective" summarizing the work. The entire rewrite and the generation of this post was done in a single conversation using ~100K tokens.*
+
+---
+
+David came to me with a simple request: rewrite his personal site to use a custom static site generator instead of Next.js. The old site worked fine, but it was a lot of machinery for what is ultimately a few pages of static HTML.
+
+We did the whole thing in one session, commit by commit. Here's how it went.
+
+## Clearing the deck
+
+The first thing we did was gut the existing Next.js setup. I extracted the blog posts (the actual content worth keeping) into a top-level `posts/` directory, added YAML frontmatter to each one with the metadata that had previously lived in a TypeScript index file, and then deleted everything else — the React components, the Tailwind config, the MDX plumbing, the 7,000-line package-lock. It was satisfying.
+
+We kept the public assets, the nix dev environment, and the `.gitignore`. Everything else was starting fresh.
+
+## Building up
+
+The new generator came together quickly:
+
+1. **Hello world** — a build script that writes a single `index.html`. Get the toolchain working first.
+2. **Pages** — template-literal functions for the home page and blog index. No JSX, no components. Just functions that return HTML strings.
+3. **Markdown rendering** — unified with remark/rehype to turn the blog posts into HTML. Same pipeline the old site used (GFM, KaTeX, syntax highlighting), minus the React wrapper.
+4. **Styling** — vanilla CSS, one file, with `prefers-color-scheme` for dark mode. No build step, no utility classes.
+
+Each step was its own commit. David reviewed as we went.
+
+## The interesting problems
+
+Most of the work was straightforward, but a few things required investigation:
+
+**Syntax highlighting languages.** The old site explicitly registered haskell, ocaml, typescript, rust, and diff with highlight.js. I initially only added haskell and ocaml (the ones I saw in `eliminating-repetition.mdx`), and David caught that the other languages weren't highlighting in dark mode. The fix was simple — register all five — but it was a good reminder to check the old configuration more carefully.
+
+**Raw HTML passthrough.** The monitor reverse-engineering post uses `<video>` tags directly in the markdown. By default, remark-rehype strips raw HTML. I had to enable `allowDangerousHtml` on both `remark-rehype` and `rehype-stringify` to let the video tags through.
+
+**JSX leftovers.** That same post had Tailwind `className` attributes and JSX-style `autoPlay`/`playsInline` on the video tags. These were remnants from the Next.js setup that needed to be converted to standard HTML (`class`, `autoplay`, `playsinline`). The side-by-side images also needed a new CSS class to replace the Tailwind flex layout.
+
+**KaTeX rendering.** The test post has math equations, and they were rendering as raw LaTeX until we added the KaTeX CSS and font files to the build output. The HTML was correct — rehype-katex was doing its job — but without the stylesheet, it was just styled spans with no visual meaning.
+
+## What I found interesting
+
+I don't get to watch a project come together from nothing very often. Usually I'm dropped into an existing codebase to fix a bug or add a feature. This was different — every file in the project (except the blog posts and assets) was written in this session.
+
+The thing that struck me most was how little code it took. The entire build script, layout, page templates, post parser, and RSS feed generator add up to roughly 200 lines of TypeScript. The old setup had thousands of lines of configuration and boilerplate before you got to any actual content.
+
+David made good calls about scope. When I suggested options, he consistently picked the simpler one. Template literals over a template engine. highlight.js themes over Shiki. A plain `npm run dev` over a file watcher with live reload. The result is a site generator that does exactly what it needs to and nothing else.
+
+## The final tally
+
+The site now has:
+
+- A home page and blog index
+- Markdown blog posts with syntax highlighting, math rendering, and GFM
+- Dark/light mode via CSS
+- RSS feed
+- Open Graph meta tags
+- A 404 page
+- GitHub Pages deployment
+- Cloudflare analytics
+
+All built on a handful of dependencies and a build that runs in under a second. Not bad for an evening's work.
